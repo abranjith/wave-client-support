@@ -1,0 +1,2055 @@
+# Wave Client — Full Documentation
+
+> Auto-generated bundle: every Wave Client documentation page concatenated into one file for LLM ingestion. Do not edit by hand — edit the individual files under docs/ and regenerate with `pnpm docs:llms`. Source files are delimited by "===== FILE: <path> =====" markers.
+
+
+===== FILE: docs/README.md =====
+
+# Wave Client Documentation
+
+**Wave Client** is a modern, platform‑agnostic REST API client that runs both as a **Visual Studio Code extension** and as a **standalone web app**. It helps you build, send, organize, and validate API requests — and chain them into automated flows and test suites — with the same interface everywhere.
+
+> **Wave Client is currently in public beta.** Features are stable enough for everyday use, but some areas are still evolving. See the [Release Notes](release-notes.md).
+
+---
+
+## Start here
+
+New to Wave Client? Follow these in order:
+
+1. **[Installation](getting-started/installation.md)** — set up the VS Code extension or the web app.
+2. **[Quick Start](getting-started/quick-start.md)** — send your first request in a couple of minutes.
+3. Browse the feature guides below for anything you want to go deeper on.
+
+> Inside either app, click the **Documentation** icon in the left sidebar to jump back here at any time.
+
+---
+
+## Documentation map
+
+### Getting started
+- [Installation](getting-started/installation.md) — prerequisites and setup for VS Code and the web app
+- [Quick Start](getting-started/quick-start.md) — your first request, step by step
+
+### Features
+
+| Area | Guide | What it covers |
+| --- | --- | --- |
+| **Requests & Protocols** | [Requests](features/requests.md) | HTTP, WebSocket, and SSE requests; URL, params, headers, body, response, "Sent" view, and keyboard shortcuts |
+| **Collections** | [Collections](features/collections.md) | Organizing requests into folders, import (into new or existing) with replacements, export, running collections, new folders, move & duplicate |
+| **Environments** | [Environments](features/environments.md) | Environment variables, global vs. environment scope, selection |
+| **Variables** | [Variables](features/variables.md) | `{{variable}}` resolution, dynamic `_fn_` functions, and temporary per‑request placeholder overrides |
+| **Authentication** | [Auth](features/auth.md) | API Key, Basic, Digest, OAuth2 (Refresh, Client Credentials, Authorization Code/PKCE), and HMAC auth, and where they apply |
+| **Validations** | [Validations](features/validations.md) | Response validation rules, operators, JSONPath and JSON Schema |
+| **Wave Store** | [Wave Store](features/wave-store.md) | Reusable cookies, auth, proxies, and client certificates |
+| **Flows** | [Flows](features/flows.md) | Chaining requests on a canvas, passing data between steps |
+| **Test Lab** | [Tests](features/tests.md) | Building and running test suites with assertions, structured per‑test‑case overrides, and a formal suite schema |
+| **Reporting** | [Reporting](features/reporting.md) | Run reports for collections, flows, and test suites |
+| **Settings** | [Settings](features/settings.md) | Data storage, encryption, and AI settings |
+| **AI / Wave Arena** | [AI & Wave Arena](features/ai-arena.md) | The in‑app AI assistant and the MCP server |
+
+### Platform guides
+- [VS Code extension](platforms/vscode.md) — command, keybinding, storage, and theme integration
+- [Web app](platforms/web-app.md) — running the local server + UI, ports, and troubleshooting
+
+### Reference
+- [Design & Architecture](design.md) — how Wave Client is built (for the architecture‑curious)
+- [Wave Schemas](schemas.md) — the persisted collection & environment file formats, field by field
+- [Versioning](versioning.md) — the four version tracks, semver semantics, and the release bump checklists
+- [Build Your Own Client](build-your-own-client.md) — use the platform-agnostic core to build a new client (CLI, desktop, …)
+- [Release Notes](release-notes.md) — what's in each release
+
+---
+
+## Feedback & contributing
+
+Wave Client is in public beta — your input directly shapes what gets built next.
+
+### Reporting bugs
+
+[Open a bug report on GitHub](https://github.com/abranjith/wave-client-support/issues/new?template=bug_report.md). The template asks for:
+- Which **feature area** is affected (Requests, Collections, Flows, etc.)
+- Your **environment** (VS Code extension or web app, OS, Wave Client version)
+- A HAR file attachment if the bug involves a request or flow — this is optional but very helpful
+
+### Requesting features
+
+[Open a feature request on GitHub](https://github.com/abranjith/wave-client-support/issues/new?template=feature_request.md). Requests for new platform clients (a CLI, a desktop app, …) are as welcome as improvements to the existing ones — Wave Client is designed to grow beyond VS Code and the web app.
+
+Browse [existing issues](https://github.com/abranjith/wave-client-support/issues) before opening a new one. Upvoting an existing issue is the clearest signal that something matters.
+
+### Pull requests
+
+The project isn't accepting pull requests yet — the codebase is still evolving quickly and we want the foundations to stabilise first. This will open up soon; contribution guidelines will be added here when it does.
+
+---
+
+## Documentation conventions
+
+- All links between docs are **relative**, so the documentation works on GitHub today and can be moved to a dedicated docs site later without rewrites.
+- Each folder has a landing page; feature guides live under [features/](features/) and platform guides under [platforms/](platforms/).
+- Screenshots referenced in these guides live in [images/](images/). Images still to be captured are tracked in [images/SCREENSHOTS.md](images/SCREENSHOTS.md).
+- Shared topics (authentication, environments, variables) are documented once and linked from the guides that use them, rather than repeated.
+- **For AI tools / LLMs:** [llms.txt](llms.txt) is a curated, machine-readable map of this documentation (per the [llms.txt convention](https://llmstxt.org)), and [llms-full.txt](llms-full.txt) is every page concatenated into one file for direct ingestion.
+
+---
+
+## What is Wave Client, in one minute?
+
+- **One core, many clients.** The same platform-agnostic core runs in a VS Code webview and in the browser today, thanks to an [adapter architecture](design.md) — and new clients (a CLI and beyond) can be [built on the same core](build-your-own-client.md).
+- **Requests beyond HTTP.** Send classic HTTP requests, or open long‑lived **WebSocket** and **Server‑Sent Events (SSE)** connections.
+- **Organize and reuse.** Group requests into [collections](features/collections.md), parameterize them with [environments](features/environments.md) and [variables](features/variables.md), and store reusable [credentials](features/wave-store.md).
+- **Automate.** Chain requests into [flows](features/flows.md) and build [test suites](features/tests.md), then export [run reports](features/reporting.md).
+- **AI built in.** Ask [Wave Arena](features/ai-arena.md) about web standards or your own workspace.
+
+For a tour of capabilities, see the [Release Notes](release-notes.md). For the "why" behind the design, see [Design & Architecture](design.md).
+
+===== FILE: docs/getting-started/installation.md =====
+
+# Installation
+
+Wave Client comes in two flavors. Pick the one that fits how you work — or use both; they share the same features and file formats.
+
+- **[VS Code extension](#vs-code-extension)** — runs inside your editor, right next to your code.
+- **[Web app](#web-app)** — runs in your browser, backed by a small local server.
+
+> Looking for platform‑specific details after install? See the [VS Code guide](../platforms/vscode.md) and the [Web app guide](../platforms/web-app.md).
+
+---
+
+## VS Code extension
+
+### Prerequisites
+- **Visual Studio Code 1.103** or newer.
+
+### Install
+1. Open the **Extensions** view in VS Code (`Ctrl+Shift+X` / `Cmd+Shift+X`).
+2. Search for **Wave Client** and click **Install**.
+
+> During the public beta you may also install Wave Client from a packaged `.vsix` file via **Extensions → … → Install from VSIX…** if you received one.
+
+### Open Wave Client
+- Open the **Command Palette** (`Ctrl+Shift+P` / `Cmd+Shift+P`) and run **Wave Client: Open Wave Client**, or
+- Press the keyboard shortcut **`Ctrl+Alt+W`** (**`Cmd+Alt+W`** on macOS).
+
+![The Command Palette showing "Wave Client: Open Wave Client"](../images/install-vscode-command.png)
+
+Wave Client opens in an editor tab. Your collections, environments, history, and settings are stored by the extension on your machine — see [Settings](../features/settings.md) for where data lives and how to encrypt it.
+
+Continue to the **[Quick Start](quick-start.md)**.
+
+---
+
+## Web app
+
+The web app is a browser UI paired with a lightweight local **server** that performs file access, request execution (proxies, certificates), and encryption — things a browser can't do safely on its own. The published package bundles both: a single command starts the server, serves the UI, and opens your browser.
+
+### Prerequisites
+- **Node.js 18.18+** (LTS recommended)
+
+### Install & run (from npm)
+> **🚧 Not yet published — coming soon.** The web app isn't on npm yet, so the commands in this section are a **preview** of how installing it will work. Until the first release, run it from source instead — see **[Run from source](#run-from-source-contributors)** below.
+
+Once published, the package name will be `@abranjith/wave-client`.
+
+Run it directly with **npx** (no install):
+
+```bash
+npx @abranjith/wave-client
+```
+
+…or install it globally and run the `wave-client` command:
+
+```bash
+npm install -g @abranjith/wave-client
+wave-client
+```
+
+This starts the local server, serves the UI on a **single port**, and opens **http://127.0.0.1:3456** in your browser.
+
+Common options:
+
+```bash
+wave-client --port 8080                 # use a different port
+wave-client --data-dir ./my-wave-data   # store data in a specific folder
+wave-client --no-open                   # don't auto-open the browser
+wave-client --help                      # all options
+```
+
+![Terminal output after starting the web app](../images/install-web-running.png)
+
+> Need to change ports, or the server won't start? See the [Web app guide](../platforms/web-app.md) for ports, the data directory, and troubleshooting.
+
+Continue to the **[Quick Start](quick-start.md)**.
+
+### Run from source (contributors)
+If you're working in the monorepo, you can run the web app in dev mode — the UI (Vite) and server run as **separate** processes on separate ports:
+
+```bash
+pnpm install   # install the whole monorepo
+pnpm dev:web   # starts the server (port 3456), then the web UI (port 5173)
+```
+
+Open **http://localhost:5173**. This dev workflow is for development only; end users should use the npm package above.
+
+---
+
+## Which one should I use?
+
+| | VS Code extension | Web app |
+| --- | --- | --- |
+| **Best for** | Working alongside your code | Browser‑based workflows / demos |
+| **Install** | VS Code Marketplace | npm (`npx` / global install) |
+| **Backend** | VS Code extension host | Local Wave Client server |
+| **Data storage** | Managed by the extension | Server file system |
+
+Both share the same UI, the same request/collection/environment formats, and the same automation features — so you can move between them freely.
+
+===== FILE: docs/getting-started/quick-start.md =====
+
+# Quick Start
+
+This guide walks you through sending your first request and saving it for later. It assumes Wave Client is already installed — if not, start with [Installation](installation.md).
+
+The steps are identical in the VS Code extension and the web app.
+
+---
+
+## 1. Open Wave Client
+
+- **VS Code:** run **Wave Client: Open Wave Client** from the Command Palette, or press **`Ctrl+Alt+W`** / **`Cmd+Alt+W`**.
+- **Web app:** open **http://localhost:5173** after running `pnpm dev:web`.
+
+You'll see a left **sidebar** with tabs (Collections, Flows, Test Lab, Wave Arena, History, Environments, Wave Store) and a main area with the **request editor**.
+
+---
+
+## 2. Create a request
+
+A new request tab opens with the HTTP method, URL bar, and request sections (Params, Headers, Body) ready to go.
+
+![A new, empty HTTP request tab](../images/quickstart-new-request.png)
+
+> Want WebSocket or SSE instead of HTTP? Use the **protocol selector** in the toolbar — see [Requests](../features/requests.md).
+
+---
+
+## 3. Set the method and URL
+
+1. Leave the method as **GET**.
+2. Type a URL into the address bar, for example:
+
+   ```text
+   https://httpbin.org/get
+   ```
+
+3. (Optional) Add a query parameter under the **Params** tab, or a header under **Headers**.
+
+You can use `{{variables}}` anywhere in the URL, headers, params, or body — see [Variables](../features/variables.md).
+
+---
+
+## 4. Send it
+
+Click **Send**.
+
+![A GET request ready to send, with the Send button highlighted](../images/quickstart-send-request.png)
+
+Wave Client executes the request and shows the result in the **response viewer**: status code, timing, response headers, and a formatted body.
+
+![The response viewer showing a 200 response body](../images/quickstart-response.png)
+
+> Curious exactly what went over the wire (final URL, resolved headers, body)? Open the **Sent** tab on the request side — see [Requests → The "Sent" view](../features/requests.md#the-sent-view).
+
+---
+
+## 5. Save it to a collection
+
+To reuse a request later, save it into a [collection](../features/collections.md):
+
+1. Click **Save**.
+2. Pick an existing collection or choose **Create New Collection**.
+3. Optionally place it inside a folder and give it a name.
+
+![The Save Request dialog with a collection selected](../images/quickstart-save-request.png)
+
+Saved requests appear in the **Collections** tab in the sidebar, where you can organize them into folders, run them, or duplicate them.
+
+---
+
+## Where to next?
+
+- **Parameterize for multiple environments** → [Environments](../features/environments.md)
+- **Add authentication** → [Auth](../features/auth.md)
+- **Validate responses automatically** → [Validations](../features/validations.md)
+- **Chain requests together** → [Flows](../features/flows.md)
+- **Build a test suite** → [Test Lab](../features/tests.md)
+- **Ask the built‑in AI assistant** → [Wave Arena](../features/ai-arena.md)
+
+===== FILE: docs/features/requests.md =====
+
+# Requests
+
+A **request** is the core unit of Wave Client. Beyond classic HTTP, Wave Client speaks three protocols, all from the same editor:
+
+- **HTTP** — request/response (GET, POST, PUT, DELETE, PATCH, …)
+- **WebSocket (WS)** — a long‑lived, two‑way connection
+- **Server‑Sent Events (SSE)** — a one‑way stream of events from the server
+
+This guide covers building and sending requests. Topics that deserve their own page — [authentication](auth.md), [environments](environments.md), [variables](variables.md), and [validations](validations.md) — are linked where relevant rather than repeated here.
+
+---
+
+## Choosing a protocol
+
+Every request tab has a **protocol selector** in the toolbar. Switching protocols reshapes the editor:
+
+| Protocol | Method + Send? | Request sections | Output |
+| --- | --- | --- | --- |
+| **HTTP** | Yes | Params, Headers, Body | Response viewer |
+| **WebSocket** | No (Connect/Disconnect instead) | Params, Headers | Messages + Response Headers |
+| **SSE** | No (Connect/Disconnect instead) | Params, Headers, Body | Events + Response Headers |
+
+![The protocol selector dropdown](../images/requests-protocol-selector.png)
+
+Tabs show a colored badge for non‑HTTP requests (teal **WS**, purple **SSE**) instead of the HTTP method.
+
+---
+
+## HTTP requests
+
+### URL and query parameters
+Type the full URL into the address bar. Query parameters can be edited as key/value rows under the **Params** tab. You can use `{{variables}}` anywhere in the URL — see [Variables](variables.md).
+
+### Headers
+Add request headers as key/value rows under the **Headers** tab; toggle individual rows on or off without deleting them.
+
+> Wave Client automatically adds a default `User-Agent` header identifying the client **only if you haven't set one yourself**. Provide your own `user-agent` header (any casing) to override it.
+
+### Cookies
+Cookies received from responses can be captured and persisted, then automatically reused on matching requests. Manage saved cookies in the [Wave Store](wave-store.md).
+
+### Request body
+Choose a body type for methods that send a body:
+
+| Body type | Use it for |
+| --- | --- |
+| **None** | Requests without a body (typical GET) |
+| **Raw** | Free‑form text with a language hint: **JSON**, **XML**, **HTML**, **Text**, or **CSV** |
+| **URL‑encoded** | `application/x-www-form-urlencoded` key/value pairs |
+| **Form‑data** | `multipart/form-data` with text **and file** fields |
+| **File** | A single raw/binary file as the body |
+
+![The request body editor showing body type options](../images/requests-body-types.png)
+
+Quick body samples and request formatting help you get started fast, and default headers are added to match the chosen body type.
+
+### Authentication
+Attach auth per request, or reference a saved credential. The supported types are API Key, Basic, Digest, OAuth2, and HMAC — see [Auth](auth.md).
+
+### Placeholders
+When a request uses `{{variables}}`, a **Placeholders** tab lets you preview each variable's resolved value and set **temporary, per‑request overrides** without editing your environments. Overrides are in‑memory only (never saved) and take precedence over environment values — see [Variables → Request placeholders](variables.md).
+
+### Sending and the response viewer
+Click **Send** to execute. The **response viewer** shows the status code, timing, response headers, and a formatted body (JSON, HTML, images, and more). Responses can be validated automatically — see [Validations](validations.md).
+
+Use the **Download** action in the response body viewer to save the exact response bytes. Wave Client suggests a filename from `Content-Disposition` when present; otherwise it generates `response_<timestamp>.<ext>` using the response `Content-Type`.
+
+![The response viewer with headers and body tabs](../images/requests-response-viewer.png)
+
+### Cancelling a request
+While a request is in flight, the **Send** button becomes a **Cancel** (stop) button — click it to abort instead of waiting for the request to time out. Cancellation aborts the actual outbound request (the server‑side call), not just the UI, so the connection is released immediately on both the desktop and web apps.
+
+A cancelled request settles in the response viewer with a distinct **"Request cancelled"** state rather than an error. The request still appears in **History** (it is recorded when you press Send), and the editor is immediately ready for the next send.
+
+### The "Sent" view
+After a send, a request‑side **Sent** tab shows the exact on‑wire request for the most recent send:
+
+- the **final URL** (with resolved query params),
+- the **final headers**, and
+- a **display‑safe body** with a format hint.
+
+This is the source of truth for "what did Wave Client actually send?" Structured bodies (form‑data, url‑encoded) are shown as JSON; binary/file bodies are summarized to metadata only — raw bytes are never retained. The Sent tab appears only after a request has actually been sent.
+
+![The "Sent" tab showing the exact outgoing request](../images/requests-sent-view.png)
+
+---
+
+## WebSocket requests
+
+Select **WebSocket** as the protocol, set the URL (and any **Params**/**Headers**, including auth), then click **Connect**. A status indicator shows the connection state.
+
+- The **Messages** panel shows a timeline of messages, tagged as **sent** or **received**.
+- Type a message and send it over the open connection; your sent message appears immediately in the timeline.
+- **Response Headers** shows the handshake response headers.
+- Click **Disconnect** to close the connection.
+
+![A WebSocket connection with the Messages panel](../images/requests-ws-messages.png)
+
+Auth resolution for WS supports API key, Bearer (via API Key with a prefix), and Basic. A maximum number of concurrent connections is enforced for stability.
+
+---
+
+## Server‑Sent Events (SSE)
+
+Select **SSE**, set the URL, optional **Params**/**Headers**, and (for POST‑based SSE) a **Body**, then click **Connect**.
+
+- The **Events** timeline shows each event with its event name, data, and a timestamp.
+- A **filter** dropdown lets you narrow the timeline to a specific event name, and **Clear** empties it.
+- **Response Headers** shows the stream's response headers.
+- Click **Disconnect** to close the stream.
+
+![An SSE connection with the Events timeline](../images/requests-sse-events.png)
+
+SSE connections support custom headers, auth, and POST bodies (Wave Client uses a streaming HTTP client rather than the browser `EventSource`, so these all work).
+
+---
+
+## Keyboard shortcuts
+
+| Shortcut | Action |
+| --- | --- |
+| `Ctrl+S` / `Cmd+S` | Save the active request — directly if it is already linked to a collection, or open the Save dialog if it is unsaved |
+
+Shortcuts are scoped to the request editor. Pressing `Ctrl+S` / `Cmd+S` while the Save dialog is already open has no effect.
+
+---
+
+## Related guides
+- [Collections](collections.md) — save and organize requests
+- [Environments](environments.md) and [Variables](variables.md) — parameterize requests
+- [Auth](auth.md) — authentication types
+- [Validations](validations.md) — automatically check responses
+- [Flows](flows.md) — chain requests together
+
+===== FILE: docs/features/collections.md =====
+
+# Collections
+
+A **collection** is a named group of saved requests, organized into nested folders. Collections are how you keep an API project tidy, reuse requests, and run many requests at once.
+
+---
+
+## Structure
+
+A collection contains **folders** and **requests** in a tree:
+
+```text
+My API (collection)
+├── Auth
+│   ├── Login        (request)
+│   └── Refresh      (request)
+└── Users
+    ├── List Users   (request)
+    └── Get User     (request)
+```
+
+Open the **Collections** tab in the sidebar to browse the tree. Collections can hold HTTP, WebSocket, and SSE requests side by side — see [Requests](requests.md).
+
+The pane header includes three quick actions:
+
+- **Add Collection (`+`)** — create a new empty Wave collection file from a name.
+- **Import** — import collections from Wave, Postman, OpenAPI/Swagger, or `.http` files.
+- **Export** — export a collection to file.
+
+![The Collections pane with nested folders and requests](../images/collections-tree.png)
+
+---
+
+## Working with items
+
+Each collection, folder, and request row has an action menu with consistent operations:
+
+- **Run** — run the item (a request, or everything under a collection/folder).
+- **Rename** — inline rename, with sibling‑level uniqueness checks (press **Enter** to commit, **Escape** to cancel).
+- **Delete** — guarded by a confirmation dialog (deleting a folder removes its whole subtree).
+- **New Folder** — create a validated empty folder under a collection or any folder, from the collection header or a folder's menu. The name must be non‑empty and unique among its siblings (case‑insensitive); the new folder appears expanded in place.
+
+Both **folders** and **requests** support:
+
+- **Move** — relocate the item to another collection or folder. The dialog offers a single searchable destination picker listing every collection and folder (any depth); you can also create a new collection on the spot. A **folder** moves with its **entire subtree** intact.
+  - The move is **atomic** and **validate‑first**: every check (existence, same‑location, name conflict, and — for folders — that you aren't moving a folder into itself or one of its own descendants) runs before anything is written. A cross‑collection move that fails midway is rolled back, so the item is never left in both places or neither.
+  - **Conflict protection** — the move is blocked when the destination already contains an item with the same name (case‑insensitive), preventing silent overwrite.
+  - Open tabs and expanded‑folder state are remapped to the new location, so a tab opened from inside a moved folder still saves back to the right place.
+
+Requests additionally support:
+
+- **Duplicate** — deep‑copy a request with a fresh ID and a collision‑safe name (`Copy`, `Copy 2`, …).
+
+---
+
+## Importing
+
+Wave Client imports several formats and converts them into Wave collections automatically:
+
+- **Postman Collection** (v2.1.0)
+- **OpenAPI / Swagger** — OpenAPI 3.x and Swagger 2.0, in **JSON or YAML** (inline `$ref`s are resolved during import). When the spec declares no server URL, request URLs are prefixed with a generated placeholder derived from the collection name (e.g. `{{PetstoreAPIUrl}}/path`) for you to fill in — rather than a fake host.
+- **HTTP** files (`.http` / `.rest`) — the [ASP.NET Core / VS Code REST Client format](https://learn.microsoft.com/en-us/aspnet/core/test/http-files), with full syntax support:
+  - Requests separated by `###` lines (text after `###` becomes the request name)
+  - `#` and `//` comments anywhere outside the body; `# @name requestName` (or `// @name`) directives name a request explicitly
+  - Optional method (defaults to `GET`), all standard methods plus `TRACE`/`CONNECT`, trailing `HTTP/x.y` ignored
+  - Multi-line URLs — continuation lines starting with `?` or `&` are appended to the URL
+  - File variables (`@var=value`) are recognized and skipped; `{{var}}` references pass through **unresolved** (resolve them with Wave [environments](environments.md) after import)
+  - Request names are made unique automatically (` 2`, ` 3`, … suffixes); unnamed requests get a name derived from the URL
+
+![The import dialog with format options](../images/collections-import.png)
+
+Native **Wave** collection files import directly. Other formats are transformed on import so requests, grouping, bodies, headers, and query parameters carry over.
+
+**Format auto-detection**: when you select a file the wizard reads its content and detects the format automatically — a Postman export renamed to `collection.json`, an OpenAPI YAML file named `spec.txt`, or an `.http` file with any name all resolve to the right format. The detection priority is: file content first (JSON registry order: OpenAPI → Postman → Wave; YAML `openapi:`/`swagger:` key; HTTP file syntax), then filename as a fallback. The **Collection Type** dropdown shows the detected choice; select a different value to override it before importing.
+
+### Where the import lands
+
+The import wizard's **Import Into** section lets you choose the destination:
+
+- **Create new collection** (default) — you provide an explicit name (prefilled from the file's own name when available). The name must be non‑empty and unique across collections, and Wave Client always writes to a fresh file, so a same‑named import never silently overwrites an existing collection.
+- **Existing collection** — pick a collection root or any folder via the destination picker. The imported file's top‑level items are merged in with fresh IDs. Merging is **all‑or‑nothing**: if any incoming name collides (case‑insensitive) with an item already at the destination, the whole import is rejected and nothing changes.
+
+Imported files are validated against the [Wave Collection Schema](../schemas.md) before anything is written — malformed files are rejected with a descriptive error. The schema reference documents every field of the persisted format.
+
+### Import‑time replacements
+
+Imports can apply a set of **find → replace** rules to the requests before the collection is saved — handy for adapting a borrowed collection to your own setup in one step. Each rule is a `find → replace` pair with an optional **regex** flag; an "Add replacement" grid in the import wizard (shown once a file is selected) collects them.
+
+Typical uses:
+
+- Replace a hard‑coded host from a Swagger/OpenAPI spec (`api.example.com`) with a variable placeholder (`{{ApiBaseUrl}}`).
+- Rename Postman‑style variables to your own (`{{oldVar}}` → `{{myVar}}`).
+
+Notes:
+
+- **Scope is request URLs and bodies only.** Header and query‑param keys/values, item names, and descriptions are left untouched (planned to widen later).
+- Literal rules replace **all** occurrences; regex rules compile with the global flag and support capture groups (`$1`). A rule with an empty find is ignored, and an invalid regex is flagged inline and blocks the import until fixed.
+- Rules are **one‑off per import** — they are applied during this import and not remembered. When no rules are entered, the import path is unchanged.
+
+**Naming rules** (enforced on every save and rename): names must be non-empty, folder and request names must be unique among their siblings (case-insensitive), and collection names must be unique across collections. Renaming a request updates the request itself atomically, and item identity (`id`) is stable across rename, move, and duplicate.
+
+---
+
+## Exporting
+
+Export a collection to share it or back it up. Use the export action on a collection to write it to a file.
+
+---
+
+## Running a collection
+
+Run a whole collection (or a folder) to execute its requests in sequence. Results are summarized in a **result explorer**, and you can generate a shareable report — see [Reporting](reporting.md).
+
+![A collection run with the result explorer](../images/collections-run.png)
+
+---
+
+## Related guides
+- [Requests](requests.md) — build the requests you save here
+- [Environments](environments.md) — switch base URLs and values per stage
+- [Reporting](reporting.md) — export results of a collection run
+- [Flows](flows.md) — chain saved requests with data passing between them
+
+===== FILE: docs/features/environments.md =====
+
+# Environments
+
+An **environment** is a named set of variables — like `Dev`, `Staging`, and `Production` — that let you reuse the same requests against different targets by swapping values instead of editing requests.
+
+You reference environment variables anywhere with `{{variableName}}`. For the full resolution rules and dynamic functions, see [Variables](variables.md).
+
+---
+
+## Environment variables
+
+Each environment holds a list of **key/value** pairs (with optional notes), and each value can be enabled or disabled. Manage them from the **Environments** tab in the sidebar.
+
+![The Environments pane](../images/environments-pane.png)
+
+Open an environment to edit its variables in a grid:
+
+![The environment editor grid](../images/environments-editor.png)
+
+---
+
+## Global vs. environment scope
+
+Wave Client supports two scopes:
+
+- **Global values** — available regardless of which environment is selected. Good for values that rarely change across stages.
+- **Environment‑specific values** — defined inside a particular environment (e.g. a different `baseUrl` for Dev vs. Production).
+
+When a name exists in both, the environment‑specific value takes precedence over the global one.
+
+---
+
+## Selecting an environment
+
+Choose the active environment for a request from the request editor. When a request is sent, `{{variables}}` are resolved using the selected environment plus global values.
+
+---
+
+## Importing & exporting
+
+Environments can be **imported** from Wave or Postman JSON files and **exported** to a file, so you can share configurations or move them between machines.
+
+### Supported import formats
+
+| Format | Description |
+|--------|-------------|
+| **Wave JSON** | A Wave environment export (single environment object or an array of environments). |
+| **Postman** | A Postman environment export (`.json`). Variables mapped as described below. |
+
+When you select a file in the import wizard, Wave Client auto-detects the format from the file content and pre-selects the **Environment Type** dropdown. You can override the detection manually before clicking Import.
+
+#### Postman → Wave mapping
+
+| Postman field | Wave field | Notes |
+|--------------|------------|-------|
+| `name` | `name` | Preserved as-is. |
+| `values[].key` | `values[].key` | Preserved as-is. |
+| `values[].value` | `values[].value` | Coerced to string. |
+| `values[].enabled` | `values[].enabled` | Defaults to `true` when absent. |
+| `values[].type === 'secret'` | `values[].type = 'secret'` | All other types map to `'default'`. |
+| `id` (Postman) | `id` ← fresh UUID | Postman's id is never trusted. |
+| — | `version` ← `'0.0.1'` | Wave schema version stamped on import. |
+
+Secret variables (`type: 'secret'` in Postman) are imported as Wave secret variables and follow the existing secret-variable handling in the editor and storage layer.
+
+### Validation
+
+Imported environments are validated against the [Wave Environment Schema](../schemas.md) before anything is written — if any entry in the file is invalid, the error is shown inline and nothing is imported. The schema reference documents every field of the persisted format, including the `version` field stamped into each environment file.
+
+---
+
+## Related guides
+- [Variables](variables.md) — `{{...}}` resolution and dynamic `_fn_` functions
+- [Requests](requests.md) — where variables get used
+- [Wave Store](wave-store.md) — store reusable credentials referenced by requests
+
+===== FILE: docs/features/variables.md =====
+
+# Variables
+
+Wave Client resolves `{{...}}` placeholders anywhere in a request — the URL, query params, headers, and body — at the moment a request is built. There are two kinds:
+
+1. **Reference variables** — `{{name}}` pulls a value from your [environments](environments.md) (and global values).
+2. **Dynamic function variables** — `{{_fn_...}}` generates a value on the fly (UUIDs, random numbers, dates, fake data, …).
+
+![A `{{variable}}` used in the URL with a resolved-value tooltip](../images/variables-in-url.png)
+
+---
+
+## Reference variables
+
+Write `{{variableName}}` to insert the value of an environment or global variable. Resolution uses the selected environment first, then global values. If a placeholder can't be resolved, it's left in place and flagged as unresolved so you can spot it before sending.
+
+See [Environments](environments.md) for defining and selecting variables.
+
+---
+
+## Dynamic function variables (`_fn_`)
+
+Placeholders that start with the reserved prefix `_fn_` are evaluated as **functions** at request‑build time, reusing the same `{{...}}` syntax.
+
+```text
+{{_fn_random_uuid}}
+{{_fn_random_number(min=1, max=100)}}
+{{_fn_current_date(format=YYYY-MM-DD)}}
+```
+
+**Rules**
+- `_fn_` is reserved — placeholders with this prefix are always treated as functions.
+- Functions are evaluated per occurrence (no caching), so two `{{_fn_random_uuid}}` produce two different values.
+- Named arguments use `key=value` pairs: `_fn_name(key=value, key=value)`.
+- Argument values must not contain the parser delimiters `,` `(` `)` `}`.
+- Unknown functions or invalid arguments stay unresolved and are reported through the normal unresolved‑placeholder flow.
+
+### Built‑in functions
+
+**Generic**
+
+| Function | Arguments | Description |
+| --- | --- | --- |
+| `_fn_random_uuid` | none | Random UUID v4 |
+| `_fn_random_number` | `min=0`, `max=100`, `decimals=0`, `prefix=`, `suffix=` | Random number with optional formatting |
+| `_fn_random_string` | `length=16`, `charset=A-Za-z0-9` | Random string from a charset/ranges |
+
+**Date / Time**
+
+| Function | Arguments | Description |
+| --- | --- | --- |
+| `_fn_current_date` | `format=YYYY-MM-DD` | Current date |
+| `_fn_current_time` | `format=HH:mm:ss` | Current time |
+| `_fn_random_date` | `min`, `max`, `format=YYYY-MM-DD` | Random date in range |
+| `_fn_random_time` | `min=00:00:00`, `max=23:59:59`, `format=HH:mm:ss` | Random time in range |
+
+**Person**
+
+| Function | Arguments | Description |
+| --- | --- | --- |
+| `_fn_random_name` | `type=person`, `parts=2` | Random person/organization name |
+| `_fn_random_name_prefix` | `values=` | Prefix from locale pool or `|`‑separated override list |
+| `_fn_random_name_suffix` | `values=` | Suffix from locale pool or `|`‑separated override list |
+
+**Address**
+
+| Function | Arguments | Description |
+| --- | --- | --- |
+| `_fn_random_address` | none | One‑line address |
+| `_fn_random_address_l1` / `_l2` | none | Address line 1 / line 2 |
+| `_fn_random_address_city` | none | City |
+| `_fn_random_address_state` | `format=abbr` (`abbr`\|`full`) | State |
+| `_fn_random_address_county` | none | County |
+| `_fn_random_address_country` | `format=abbr` (`abbr`\|`full`) | Country |
+| `_fn_random_address_zip` | none | 5‑digit ZIP |
+
+**Contact**
+
+| Function | Arguments | Description |
+| --- | --- | --- |
+| `_fn_random_email` | `domain=` | Random email (locale domains when omitted) |
+| `_fn_random_phone` | `format=(###) ###-####` | Replaces each `#` with a random digit |
+| `_fn_random_ssn` | `format=###-##-####` | Replaces each `#` with a random digit |
+
+### Date/time format tokens
+
+`YYYY` / `YY` (year), `MMM` / `MM` / `M` (month), `DD` / `D` (day), `HH` / `H` (hour, 24h), `mm` / `m` (minute), `ss` / `s` (second).
+
+> The function catalog is maintained alongside the code at [`packages/core/src/utils/functions/README.md`](../../packages/core/src/utils/functions/README.md), which is the authoritative reference and includes additional examples.
+
+---
+
+## Request placeholders (temporary per‑request overrides)
+
+The request editor has a **Placeholders** tab that lets you inspect and **temporarily override** the `{{variable}}` placeholders used anywhere in the current request — URL (including query params), headers, and body — without touching your environments.
+
+Use it to:
+
+1. **Try throwaway values quickly.** Set a value for a variable just for this request and re‑send with different values, instead of editing the request inline or repeatedly changing environment variables.
+2. **Preview what will actually be sent.** Per variable, see the value that will be substituted: your override first, then the environment value, then unresolved.
+
+How it behaves:
+
+- **Temporary & per‑tab.** Overrides live in memory for that tab (they survive tab switches) but are **never saved** to the request or to history.
+- **Takes precedence over environment variables** — without changing them. A variable that has an override renders as **resolved (green)** in the URL, params, headers, and body inputs, and the sent request uses the override value.
+- **Case‑insensitive.** An override named `token` beats an environment value named `Token`.
+- **Function variables are excluded.** System/function placeholders (`{{_fn_…}}`) have runtime meaning and are not overridable.
+- **The tab appears only when there's something to override** — if the request uses no `{{variables}}`, the Placeholders tab is hidden.
+- A single **hide/unhide** toggle masks values that may be secrets, and **Clear** removes all overrides for the tab.
+
+> **Auth values are out of scope.** Auth configuration may use `{{variables}}` too, but those are intentionally **not** overridden from the Placeholders tab — set auth values through [Auth](auth.md) instead.
+
+---
+
+## Related guides
+- [Environments](environments.md) — define and select reference variables
+- [Requests](requests.md) — where variables are used
+- [Flows](flows.md) — pass data between requests using flow variable references
+
+===== FILE: docs/features/auth.md =====
+
+# Authentication
+
+Wave Client can attach authentication to your requests and reuse credentials across many requests. This page covers the supported auth types and where they apply.
+
+---
+
+## Supported auth types
+
+| Type | What it sends | Key options |
+| --- | --- | --- |
+| **API Key** | A key as a header or query parameter | `key`, `value`, send in **header** or **query**, optional **prefix** (e.g. `Bearer `, `Token `) |
+| **Basic** | `Authorization: Basic …` | `username`, `password` |
+| **Digest** | HTTP Digest challenge/response | `username`, `password` only — every other digest parameter (`realm`, `nonce`, `algorithm`, `qop`, …) is taken from the server challenge automatically |
+| **OAuth2 (Refresh Token)** | A bearer access token obtained from a refresh token | `tokenUrl`, `clientId`, `clientSecret`, `refreshToken`, `scope`, **client auth method**; the access token is cached and refreshed as needed |
+| **OAuth2 (Client Credentials)** | A bearer access token from the machine‑to‑machine `client_credentials` grant | `tokenUrl`, `clientId`, `clientSecret`, optional `scope` and `audience`, **client auth method** |
+| **OAuth2 (Authorization Code + PKCE)** | A bearer access token acquired interactively (with a manual code/URL paste), then refreshed | `authorizationUrl`, `tokenUrl`, `clientId`, optional `clientSecret`, `redirectUri`, optional `scope`, **code challenge method**, **client auth method** |
+| **HMAC** | A computed HMAC signature placed in a header or query parameter | `algorithm`, `secretKey`, optional `keyId`, **signature template**, **output encoding**, **send in** (header/query), **target name**, optional `prefix`/timestamp/nonce headers |
+
+> **Bearer tokens:** there isn't a separate "Bearer" type — use **API Key**, send it in the **header** named `Authorization`, with the prefix `Bearer `.
+
+Each saved credential also carries common options: a unique **name**, an **enabled** flag, **domain filters** (so a credential is only applied to matching hosts), and an optional **expiry date**.
+
+### No assumed defaults
+
+Auth configuration follows a strict **no‑assumed‑defaults** policy: you supply every value that affects how a credential is computed or transmitted. In particular, the OAuth2 **client auth method** (`basic` = `client_secret_basic` vs `body` = `client_secret_post`), the Authorization Code **challenge method** (`S256` — recommended — vs `plain`), and the HMAC **algorithm** and **output encoding** have **no preselected value** — pick one explicitly. If a token endpoint omits `expires_in`, Wave Client does not invent a lifetime; it fetches a fresh token per request instead of caching one with a fabricated TTL.
+
+---
+
+## OAuth2
+
+All four OAuth2 variants share the same token‑endpoint mechanics; they differ only in how the token is obtained.
+
+### OAuth2 Client Credentials
+
+For machine‑to‑machine APIs. Provide the **Token URL**, **Client ID**, **Client Secret**, a required **Client Auth Method**, and (when the provider needs them) **Scope** and **Audience**. At request time Wave Client requests a token with `grant_type=client_credentials`, caches it for its lifetime, and applies it as `Authorization: <tokenType> <accessToken>`.
+
+### OAuth2 Authorization Code (PKCE, manual paste)
+
+For user‑delegated access. Because Wave Client has no hosted redirect listener, the authorization step is **manual paste**:
+
+1. **Configure** the **Authorization URL**, **Token URL**, **Client ID**, optional **Client Secret** (omit for public PKCE clients), **Redirect URI** (must match what you registered with the provider), optional **Scope**, a required **Code Challenge Method** (`S256` recommended), and **Client Auth Method**.
+2. **Generate & Open** — Wave Client creates a PKCE `code_verifier`/`code_challenge` and a `state`, builds the authorize URL, and lets you open it externally (or copy it).
+3. Authorize in your browser, then **paste back** the resulting authorization `code` (or the full redirect URL).
+4. **Exchange** — Wave Client validates `state`, exchanges the `code` + `code_verifier` for tokens through the platform HTTP client (so proxy/cert settings apply), and stores the `accessToken`/`refreshToken`/`tokenType`/expiry on the credential.
+
+At request time the stored access token is applied; if it has expired and a refresh token exists, it is refreshed transparently. If there is no usable token and no refresh token, the request surfaces a clear "re‑authorize" error.
+
+> Authorization codes are single‑use and short‑lived — exchange immediately after pasting.
+
+---
+
+## HMAC
+
+HMAC signs each request with a shared secret — no interactive step. At request time Wave Client renders your **signature template** against the live request, computes `HMAC(algorithm, secretKey)`, encodes it, and places the result under your chosen header or query parameter.
+
+Configure:
+
+- **Algorithm** — `sha256` / `sha1` / `sha512` / `md5` (no default).
+- **Secret Key** — the shared secret (masked).
+- **Key ID** — optional public key identifier, when the scheme includes one.
+- **Signature Template** — the string‑to‑sign, using the placeholders below.
+- **Output Encoding** — `hex` or `base64` (no default).
+- **Send In** / **Target Name** — header or query parameter, and its name.
+- **Prefix** — optional scheme label prepended to the signature (e.g. `"HMAC "`).
+- **Timestamp Header** / **Nonce Header** — optional headers that carry the generated `{timestamp}` / `{nonce}` so the server can verify them.
+
+**Signature template placeholders** (resolved against the outgoing request; `{{env}}` variables are resolved first):
+
+| Placeholder | Value |
+| --- | --- |
+| `{method}` | HTTP method, upper‑case |
+| `{url}` | The full request URL |
+| `{path}` | URL path |
+| `{query}` | Raw query string (no leading `?`) |
+| `{host}` | Host |
+| `{body}` | Raw request body as a string |
+| `{timestamp}` | Generated Unix timestamp (seconds) |
+| `{nonce}` | Generated random hex nonce |
+
+Example: signing `{method}\n{path}\n{timestamp}` into an `X-Signature` header with a companion `X-Timestamp` header.
+
+---
+
+## Where auth applies
+
+- **Per request** — choose an auth type directly on a request.
+- **Saved & reused** — store credentials once in the [Wave Store → Auth](wave-store.md) and reference them from multiple requests, with **domain filters** controlling where each one is sent.
+
+![The Auth store with several saved credentials](../images/auth-store.png)
+
+### Real‑time protocols
+For [WebSocket and SSE](requests.md) connections, auth resolution supports **API key**, **Bearer** (via API Key with a prefix), and **Basic**. Digest is not applied to WS/SSE connections.
+
+---
+
+## Related guides
+- [Wave Store](wave-store.md) — save and manage reusable credentials
+- [Requests](requests.md) — attach auth to a request
+- [Environments](environments.md) / [Variables](variables.md) — keep secrets out of requests using `{{variables}}`
+
+===== FILE: docs/features/validations.md =====
+
+# Validations
+
+Validations let Wave Client automatically check a response and mark it **pass** or **fail** — no manual inspection required. They power both ad‑hoc requests and automated [test suites](tests.md) and [flows](flows.md).
+
+---
+
+## How validation works
+
+A validation **rule** targets part of a response and applies an **operator** with an expected value. When a request runs, all applicable rules are evaluated and the response is marked pass/fail accordingly.
+
+> **Default behavior:** if no rules are defined, a response is considered successful when it returns a **2xx** status code.
+
+![The validation rule editor for a body rule](../images/validations-rule-editor.png)
+
+---
+
+## What you can validate
+
+- **Status code** — assert the response status.
+- **Headers** — assert a header value, including regex matching (`matches_regex`).
+- **Body** — assert on the response body using:
+  - **JSONPath** expressions (full JSONPath: recursive descent `$..`, wildcards `[*]`, array slicing, and filter expressions),
+  - structural **JSON** comparison for `equals` / `not_equals` (deep equality), `contains` (subset match), and `not_contains` (property‑absence), and
+  - **JSON Schema** validation (draft‑07) via the `json_schema_matches` operator.
+
+When the editor needs you to provide a JSON Schema, it validates the schema as you type and shows a live valid/invalid indicator (a green check or a red X) so you catch mistakes before saving.
+
+![A response showing validation pass/fail](../images/validations-result.png)
+
+---
+
+## Reusable rules
+
+Validation rules can be saved and managed centrally in the [Wave Store](wave-store.md), so the same checks apply across many requests.
+
+---
+
+## Related guides
+- [Requests](requests.md) — responses that get validated
+- [Test Lab](tests.md) — assert across many requests in a suite
+- [Flows](flows.md) — branch a flow on validation pass/fail
+- [Wave Store](wave-store.md) — manage saved validation rules
+
+===== FILE: docs/features/wave-store.md =====
+
+# Wave Store
+
+The **Wave Store** is where Wave Client keeps reusable, cross‑request data so you don't have to redefine it every time. Open it from the **Wave Store** tab in the sidebar.
+
+![The Wave Store listing Cookies, Auth, Proxy, and Cert](../images/wave-store-panes.png)
+
+It holds four kinds of items:
+
+| Store | What it holds | How requests use it |
+| --- | --- | --- |
+| **Cookies** | Cookies captured from responses or added manually | Active cookies are reused automatically on matching requests |
+| **Auth** | Saved credentials (API Key, Basic, Digest, OAuth2) | Referenced by requests; **domain filters** control where each is sent |
+| **Proxy** | HTTP/HTTPS/SOCKS proxy configurations | Applied when executing requests |
+| **Cert** | Client certificates (mTLS) | Presented during TLS handshakes for matching hosts |
+
+---
+
+## Cookies
+Wave Client can capture `Set‑Cookie` values from responses and persist them. A cookie manager lets you add and remove cookies, and active cookies are sent automatically on requests that match.
+
+## Auth
+Define a credential once and reuse it across requests. Each credential has a unique name, an enabled flag, optional expiry, and **domain filters** that restrict which hosts it applies to. See [Auth](auth.md) for the full list of supported types and options.
+
+## Proxy
+Store proxy settings (HTTP, HTTPS, or SOCKS) so requests can be routed through a proxy. Proxy and certificate handling are performed by the backend (the VS Code extension host or the local server).
+
+## Cert
+Store client certificates for **mutual TLS (mTLS)**. The matching certificate is presented automatically when connecting to hosts that require it.
+
+---
+
+## Related guides
+- [Auth](auth.md) — supported credential types
+- [Requests](requests.md) — where stored items are applied
+- [Settings](settings.md) — where data is stored and how to encrypt it
+
+===== FILE: docs/features/flows.md =====
+
+# Flows
+
+A **flow** chains requests together on a visual canvas so the output of one step feeds the input of the next — for example: log in, capture the token, then call an authenticated endpoint.
+
+Open the **Flows** tab in the sidebar to create and manage flows.
+
+---
+
+## The flow canvas
+
+A flow is a set of **request nodes** connected by **connectors**. Add requests from your [collections](collections.md) to the canvas (you can add several at once), then connect them to define execution order.
+
+![A flow with several request nodes connected](../images/flows-canvas.png)
+
+---
+
+## Connectors and conditions
+
+Connectors define the path between nodes and can carry a **condition** so the flow branches based on the previous step's result — including **validation pass/fail** (see [Validations](validations.md)). Condition chips are color‑coded for readability in both light and dark themes.
+
+![A connector with a condition chip](../images/flows-connector-condition.png)
+
+---
+
+## Passing data between steps (aliases & references)
+
+Each request node has a readable **alias** (a deterministic kebab‑case name derived from the request, e.g. `get-employee`, with `-2`, `-3` suffixes to avoid collisions). You reference an earlier step's response in a later step using the alias plus a section and an optional JSONPath:
+
+```text
+{{alias.$body:$.data.id}}          # JSONPath into the response body
+{{alias.$body:$..id}}              # recursive descent
+{{alias.$body:$.users[?(@.active)].id}}   # filter expression
+{{alias.$body:$.items[0:2]}}       # array slice
+{{alias.$headers:content-type}}    # a response header
+{{alias.$status}}                  # status code
+{{alias.$statusText}}              # status text
+```
+
+Shorthand body forms are also supported: `{{$.data.id}}` and `{{data.id}}`.
+
+To grab an alias quickly, hover a node's alias to open a card with a **Copy** button.
+
+![The node alias hover card with the Copy button](../images/flows-alias-copy.png)
+
+> Body references are evaluated with a full JSONPath engine, so recursive descent, wildcards, filters, and slices all behave consistently. (The older dot‑form `{{alias.$body.data.id}}` is intentionally not supported — use the `:` + `$` form above.)
+
+---
+
+## Running a flow
+
+Run a flow to execute its nodes in order, following connector conditions. The results panel shows each node's actual on‑wire request and a consistent pass/fail status, with transport failures rendered as friendly errors (no bare `HTTP 0`) — the same representation used across the collection runner, test suites, and reports. You can export the results as a report — see [Reporting](reporting.md) and [how a result is classified](reporting.md#how-a-result-is-classified).
+
+---
+
+## Related guides
+- [Collections](collections.md) — source of the requests you add to a flow
+- [Variables](variables.md) — `{{...}}` resolution basics
+- [Validations](validations.md) — branch connectors on pass/fail
+- [Reporting](reporting.md) — export a flow run
+
+===== FILE: docs/features/tests.md =====
+
+# Test Lab
+
+The **Test Lab** lets you group requests into a **test suite** and run them together with assertions, so you can confirm an API behaves as expected in one click.
+
+Open the **Test Lab** tab in the sidebar.
+
+---
+
+## Test suites
+
+A **suite** is an ordered list of requests, each with its [validations](validations.md) acting as assertions. Add requests to a suite (you can select multiple at once), arrange them, and give the suite a name.
+
+![A test suite with requests and assertions](../images/tests-suite-editor.png)
+
+Each request in a suite carries its own validation rules; when the suite runs, those rules determine whether each step passes or fails. See [Validations](validations.md) for the available operators (status, headers, body via JSONPath/JSON Schema).
+
+A suite item can reference a saved request **or** a [flow](flows.md). Run **settings** (concurrent calls, delay between calls, stop‑on‑failure) live in a collapsible **Run Settings** section in the editor body.
+
+---
+
+## Test cases
+
+Each request item can hold one or more **test cases** — named scenarios that run the same request with different inputs (data‑driven testing). An item with no test cases simply runs once with no overrides.
+
+Open a test case to edit it in a structured editor organized into collapsible sections. Every section is an **override** layered on top of the base request — leave a section empty to inherit the request's own value:
+
+| Section | What it overrides | How it applies |
+| --- | --- | --- |
+| **Variables** | `{{variable}}` values for this case | **Merge** — overrides environment values by name; detected request placeholders are prepopulated, and you can add free‑form rows |
+| **Headers** | Request headers | **Merge** — overrides by key (case‑insensitive) or adds new headers |
+| **Query Params** | Query parameters | **Merge** — overrides by key or adds new params |
+| **Body** | Request body | **Replace** — choose None / Raw / File / Form URL‑Encoded / Multipart; files are stored inline with the test case |
+| **Auth** | Auth profile | **Replace** — swap the auth credential for this case |
+| **Validation** | Assertions | **Replace** — when set, only these rules run for this case; the request's own rules are skipped |
+
+The headers, params, and variables tables behave like the request editor's (styled `{{variable}}` inputs, enable/disable rows). The **Validation** section edits rules **inline** — "Add rule" expands the rule editor in place (no nested dialog) — and you can also link a global rule by reference. A note in that section reminds you that adding rules here *replaces* the request's rules for the case.
+
+> **Override presence = intent.** Empty sections are omitted on save, so they fall back to the base request. Variable, header, and body overrides may contain secrets — they are kept with the suite file and never logged.
+
+The test‑suite list shows each test case's full name, its (untruncated) description, and a compact summary of which overrides it defines.
+
+---
+
+## Running a suite
+
+Run the suite to execute every request in order and evaluate its assertions. Each item runs once per enabled test case, applying that case's overrides. The result shows per‑request pass/fail and an overall summary, which you can export — see [Reporting](reporting.md).
+
+A failing test case (by status **or** validation) rolls its item up to **Failed**, and any failing item rolls the whole suite up to **Failed**.
+
+![A test suite run result](../images/tests-run.png)
+
+---
+
+## File format & authoring
+
+Test suites are stored as JSON. The format — every field, the merge‑vs‑replace override semantics, validation precedence, and tips for authoring suites by hand or with AI agents — is documented in the [Test Suite Schema Reference](../test-suite-schema.md). Suites are validated against this schema when loaded; a malformed suite is skipped with a visible error rather than crashing the app.
+
+---
+
+## Related guides
+- [Validations](validations.md) — the assertions used in a suite
+- [Requests](requests.md) — build the requests you add
+- [Reporting](reporting.md) — export suite results
+- [Flows](flows.md) — for data‑passing chains rather than independent checks
+- [Test Suite Schema Reference](../test-suite-schema.md) — the persisted test‑suite file format
+
+===== FILE: docs/features/reporting.md =====
+
+# Reporting
+
+When you run a [collection](collections.md), [flow](flows.md), or [test suite](tests.md), Wave Client can produce an **HTML run report** you can save and share.
+
+![An exported HTML run report with summary tiles](../images/reporting-html-report.png)
+
+---
+
+## What's in a report
+
+- **Summary tiles** — Total / Passed / Failed / Skipped counts. Counts reflect the same classification used per request — see [How a result is classified](#how-a-result-is-classified).
+- **Per‑request detail** — each request as an expandable card showing request and response details, with validation status surfaced for successful runs. The **Request** tab prefers the actual on‑wire request (the [Sent](requests.md) snapshot — final URL, headers, and body) over the configured request, so the report shows what was really sent.
+- **Response rendering** — response and validation payloads render in horizontally scrollable code blocks, so long single‑line JSON stays readable. Base64‑encoded text responses are decoded before formatting.
+- **Friendly errors** — transport failures (DNS, connection refused, timeout, TLS) render as a clear message with a hint instead of a bare `HTTP 0` / `Unknown Error`. A status code is shown only when there is a real HTTP response.
+
+---
+
+## How a result is classified
+
+A single rule decides pass/fail everywhere — the collection runner, the flow runner, the test‑suite panel, and the HTML report all use it:
+
+1. **No response / transport error** ⇒ **Failed** (with the friendly error message).
+2. **A validation result exists** ⇒ pass/fail follows the validation (all rules passed ⇒ **Passed**). This means a request that *expects* a non‑2xx status — e.g. a rule asserting `400` — counts as **Passed**.
+3. **Otherwise** ⇒ a `2xx`/`3xx` status is **Passed**, anything else **Failed**.
+
+So an HTTP 200 with a failing validation is **Failed**, and a deliberate 400 matched by an "expect 400" rule is **Passed**. For test suites, a failing case rolls its item up to Failed, and a failing item rolls the suite up to Failed.
+
+---
+
+## Interacting with a report
+
+The HTML report is self‑contained and interactive:
+
+- **Search** top‑level cards by name, method, URL, and folder.
+- **Filter** by status by clicking a summary tile; click the same tile again to clear the filter.
+- **Expand All / Collapse All** toggles every request card at once.
+- Long names and URLs show full text via native tooltips when truncated.
+
+---
+
+## Related guides
+- [Collections](collections.md) — run a collection
+- [Flows](flows.md) — run a flow
+- [Test Lab](tests.md) — run a test suite
+
+===== FILE: docs/features/settings.md =====
+
+# Settings
+
+Open **Settings** from the gear icon at the bottom of the sidebar. The settings wizard is organized into three collapsible sections.
+
+![The settings wizard with its collapsible sections](../images/settings-wizard.png)
+
+---
+
+## General Settings *(expanded by default)*
+
+Covers **data storage** and **request‑related** controls:
+
+- **Where data is stored** — the location Wave Client uses for your collections, environments, history, and stores.
+- **Request controls** — request‑level preferences applied when sending.
+
+In the **VS Code extension**, data is managed on your machine by the extension. In the **web app**, data is stored by the local [Wave Client server](../platforms/web-app.md).
+
+---
+
+## Security Settings
+
+Controls **encryption** of your stored data:
+
+- **Enable/disable encryption** with a password.
+- **Change password**.
+- **Export a recovery key** and **recover** with it if you forget your password.
+
+Secrets are handled through platform‑secure storage (VS Code `SecretStorage` in the extension; server‑side encryption for the web app). See [Design & Architecture](../design.md) for how this is implemented.
+
+---
+
+## Arena / AI Settings
+
+Configure the built‑in AI assistant — provider, model, and related options. See [AI & Wave Arena](ai-arena.md) for what the assistant can do.
+
+![The Arena/AI settings section](../images/arena-settings.png)
+
+---
+
+## Related guides
+- [Wave Store](wave-store.md) — the data that encryption protects
+- [VS Code extension](../platforms/vscode.md) / [Web app](../platforms/web-app.md) — platform‑specific storage
+- [AI & Wave Arena](ai-arena.md) — configure the assistant
+
+===== FILE: docs/features/ai-arena.md =====
+
+# AI & Wave Arena
+
+**Wave Arena** is Wave Client's built‑in AI assistant. Open it from the **Wave Arena** tab in the sidebar. It brings two kinds of help into the app:
+
+- **Web expertise** — answers about web standards and protocols (HTTP, real‑time, RPC, API design, security, the web platform), grounded in authoritative sources.
+- **Workspace assistance** — questions and actions about *your* Wave Client workspace (collections, requests, environments, flows, tests), backed by tools rather than guesswork.
+
+![The Wave Arena chat panel with a command in the input](../images/arena-chat.png)
+
+---
+
+## Commands
+
+Wave Arena understands a set of slash commands as well as free‑form questions:
+
+| Command | What it does |
+| --- | --- |
+| `/help` | List available commands |
+| `/collections` | List your collections |
+| `/requests` | List requests |
+| `/environments` | List environments |
+| `/flows` | List flows |
+| `/tests` | List test suites |
+| `/run-flow` | Run a flow (asks you to confirm the target first) |
+| `/run-tests` | Run a test suite (asks you to confirm the target first) |
+
+Workspace answers are **tool‑backed**: the assistant won't fabricate collections, environments, flows, or tests, and run actions (`/run-flow`, `/run-tests`) require explicit confirmation before anything executes.
+
+---
+
+## Configuring the assistant
+
+Pick your AI provider and model in **Settings → Arena / AI Settings** (see [Settings](settings.md)). Provider availability evolves during the beta.
+
+---
+
+## MCP server (for external AI tools)
+
+Wave Client also ships an **MCP (Model Context Protocol) server** that exposes your workspace to *external* AI agents (for example, an AI assistant in another tool). Through it, an agent can inspect collections and requests, search endpoints, read environments (with secrets masked), and list/run flows and test suites.
+
+Available tools include `list_collections`, `search_requests`, `list_flows`, `run_flow`, `list_test_suites`, and `run_test_suite`.
+
+> For setup and the full tool list, see the package reference: [`packages/mcp-server/README.md`](../../packages/mcp-server/README.md).
+
+---
+
+## Related guides
+- [Settings](settings.md) — choose the AI provider/model
+- [Flows](flows.md) and [Test Lab](tests.md) — what `/run-flow` and `/run-tests` operate on
+- [Design & Architecture](../design.md) — how the AI engine fits the codebase
+
+===== FILE: docs/platforms/vscode.md =====
+
+# VS Code Extension
+
+The Wave Client VS Code extension brings the full client into your editor. This page covers VS Code‑specific details; for general usage, start with the [feature guides](../README.md#features).
+
+For installation, see [Installation → VS Code](../getting-started/installation.md#vs-code-extension).
+
+---
+
+## Opening Wave Client
+
+- **Command Palette:** run **Wave Client: Open Wave Client**.
+- **Keyboard shortcut:** **`Ctrl+Alt+W`** (**`Cmd+Alt+W`** on macOS).
+
+Wave Client opens in a webview panel.
+
+![The Wave Client sidebar inside VS Code](../images/vscode-sidebar.png)
+
+---
+
+## Documentation icon
+
+Click the **Documentation** icon at the bottom of the left sidebar (next to Settings and the theme toggle) to open this documentation in your browser.
+
+---
+
+## Where your data lives
+
+Collections, environments, history, cookies, auth, proxies, certificates, validation rules, and settings are stored on your machine by the extension. Secrets are kept in VS Code's **SecretStorage**. You can enable encryption for stored data in [Settings → Security](../features/settings.md#security-settings).
+
+---
+
+## Networking
+
+The extension performs request execution in its Node.js backend, which means full support for:
+
+- HTTP/HTTPS/SOCKS **proxies**,
+- custom CA and **client certificates (mTLS)**, and
+- request **cancellation** and timeouts.
+
+Configure proxies and certificates in the [Wave Store](../features/wave-store.md).
+
+---
+
+## Theme
+
+The webview follows light/dark styling and aligns with your VS Code theme.
+
+---
+
+## Related
+- [Installation](../getting-started/installation.md)
+- [Quick Start](../getting-started/quick-start.md)
+- [Settings](../features/settings.md)
+- [Web app](web-app.md) — the browser alternative
+
+===== FILE: docs/platforms/web-app.md =====
+
+# Web App
+
+The Wave Client web app runs in your browser and is backed by a small **local server**. The server handles the things a browser can't do safely on its own — file access, request execution with proxies/certificates, and encryption — while the browser renders the same UI as the VS Code extension.
+
+For installation, see [Installation → Web app](../getting-started/installation.md#web-app).
+
+![The web app running in a browser](../images/web-app-overview.png)
+
+---
+
+## Running it
+
+> **🚧 Not yet published — coming soon.** The web app isn't on npm yet; the commands below are a **preview**. For now, run it from source in the monorepo with `pnpm install && pnpm dev:web` (UI on port `5173`, server on `3456`).
+
+Install from npm and run the `wave-client` command to start the server, serve the UI, and open your browser:
+
+```bash
+npx @abranjith/wave-client          # run without installing
+# or
+npm install -g @abranjith/wave-client
+wave-client
+```
+
+This starts the bundled server, serves the UI from the **same port**, and opens your browser.
+
+### Options
+- `-p, --port <port>` — port to listen on (default `3456`, or `WAVE_PORT`)
+- `--host <host>` — interface to bind (default `127.0.0.1`, or `WAVE_HOST`)
+- `--data-dir <dir>` — where Wave stores data (default `~/.waveclient`, or `WAVE_DATA_DIR`)
+- `--no-open` — don't auto-open the browser
+- `-v, --version`, `-h, --help`
+
+The UI and API share a single origin, so there's no separate UI port and no CORS to configure. By default the server binds to loopback only; use `--host 0.0.0.0` to expose it on a trusted network (there is no authentication).
+
+> **Contributors:** in the monorepo, `pnpm dev:web` runs the UI (Vite, port `5173`) and server (port `3456`) as separate dev processes. That's for development only.
+
+---
+
+## Documentation icon
+
+Click the **Documentation** icon at the bottom of the left sidebar (next to Settings and the theme toggle) to open this documentation in a new browser tab.
+
+---
+
+## Server connection status
+
+The web app monitors the connection to the local server. If the server isn't running, a banner appears prompting you to start it. Start (or restart) the server and the app reconnects.
+
+---
+
+## Where your data lives
+
+In the web app, your collections, environments, history, and stores are stored on your machine under `~/.waveclient` by default. Point it elsewhere with `--data-dir <dir>` (or the `WAVE_DATA_DIR` environment variable). See [Settings](../features/settings.md) for details and encryption.
+
+---
+
+## Troubleshooting
+
+| Symptom | Fix |
+| --- | --- |
+| Banner: "Server disconnected" | The server stopped — rerun `wave-client` (contributors: `pnpm dev:server`). |
+| Port already in use | Start on a different port: `wave-client --port <port>`. |
+| UI loads but requests fail | Confirm the server is healthy at `http://127.0.0.1:<port>/health`. |
+| `hnswlib-node` install error | The AI features use a native module. Ensure you're on Node 18.18+; on uncommon platforms a build toolchain may be required. |
+
+---
+
+## Related
+- [Installation](../getting-started/installation.md)
+- [Quick Start](../getting-started/quick-start.md)
+- [Settings](../features/settings.md)
+- [VS Code extension](vscode.md) — the editor‑integrated alternative
+
+===== FILE: docs/design.md =====
+
+# Design & Architecture
+
+This guide is for the architecture‑curious — contributors and anyone who wants to understand *how* Wave Client is built. It's not required reading to use the app.
+
+The central idea: **write the UI once, run it everywhere.** Wave Client is a monorepo where a platform‑agnostic core UI is shared between a VS Code extension and a web app, with platform differences isolated behind an **adapter** boundary.
+
+---
+
+## Why a monorepo?
+
+Wave Client targets multiple environments (VS Code today; the browser; potentially others later) that should look and behave identically. A monorepo lets all of them depend on a single shared core and shared services, so a feature or fix lands once and every platform benefits — no copy‑paste, no drift.
+
+---
+
+## The packages
+
+| Package | Why it exists | What it hosts |
+| --- | --- | --- |
+| **`core`** | The platform‑agnostic heart | All React UI components, hooks, the Zustand store, types, and pure utilities. Contains **zero** platform‑specific code. |
+| **`vscode`** | Run Wave Client inside VS Code | The extension host (activation, webview panel, message handler, services) and the VS Code adapter that bridges the webview to VS Code APIs. |
+| **`web`** | Run Wave Client in the browser | The browser entry point and the web adapter that talks to the local server. |
+| **`server`** | Give the web app real I/O | A lightweight Node.js server providing file access, HTTP execution (proxies/certs), encryption, and a push channel. |
+| **`shared`** | Logic both backends need | Node‑side services (HTTP, WebSocket, SSE, storage, security, …) used by the VS Code extension host and the server alike. |
+| **`arena`** | The AI engine | A LangGraph‑based multi‑agent system powering Wave Arena (web‑expert and workspace agents). |
+| **`mcp-server`** | Expose the workspace to external AI | An MCP server with tools to inspect collections/environments and list/run flows and test suites. |
+
+---
+
+## The adapter pattern
+
+The core UI never performs I/O directly. Instead it calls an **`IPlatformAdapter`**, and each platform provides its own implementation. This is what keeps `core` pure and portable.
+
+```
+┌──────────────────────── @wave-client/core ───────────────────────┐
+│  Components → Hooks → useAdapter()                                 │
+└───────────────────────────────┬───────────────────────────────────┘
+                                 │ IPlatformAdapter (interface)
+                ┌────────────────┴────────────────┐
+                ▼                                  ▼
+        vsCodeAdapter                         webAdapter
+   (postMessage ↔ extension)           (HTTP/WebSocket ↔ server)
+```
+
+### The sub‑adapters
+`IPlatformAdapter` is composed of focused sub‑adapters plus an event emitter:
+
+| Sub‑adapter | Responsibility |
+| --- | --- |
+| `storage` | Collections, environments, history, cookies, auth, proxies, certs, validation rules, settings |
+| `http` | Execute (and cancel) HTTP requests |
+| `file` | File dialogs and read/write/import/download |
+| `secret` | Secure key storage |
+| `security` | Encryption enable/disable, password change, recovery key |
+| `notification` | User notifications and dialogs |
+| `arena` | AI assistant storage and streaming integration |
+| `clipboard` | Read/write the platform clipboard |
+| `events` | Push‑event emitter (see below) |
+| `realtime` | *(optional)* WebSocket/SSE connections |
+
+Plus a `platform` discriminator (`'vscode' | 'web' | 'test'`) and optional `initialize()` / `dispose()`.
+
+> Want to implement this for a new platform (a CLI, desktop app, …)? See [Build Your Own Client](build-your-own-client.md).
+
+### Two communication styles
+1. **Request/response** — a component calls an adapter method and awaits a `Result`.
+2. **Push events** — the platform emits events the UI subscribes to (banners, "data changed" signals, encryption status). Components subscribe with `useAdapterEvent` / `useAdapterEvents`.
+
+### Request/response correlation (VS Code)
+The webview can't share memory with the extension host, so the `vsCodeAdapter` uses a **`requestId`‑correlated promise** pattern: each call stores a pending promise keyed by a unique `requestId`, posts a message, and resolves the matching promise when a response with that `requestId` arrives. Correlation is by `requestId`, not by message‑type name — so many requests can be in flight safely. The web adapter, talking to an HTTP server, mostly resolves directly; it uses a WebSocket channel for push events and real‑time updates.
+
+---
+
+## The Result pattern
+
+Every fallible adapter operation returns a typed `Result<T, E>` instead of throwing:
+
+```ts
+type Result<T, E> =
+  | { isOk: true;  value: T }
+  | { isOk: false; error: E };
+
+const result = await storage.loadCollections();
+if (result.isOk) {
+  setCollections(result.value);
+} else {
+  notification.showNotification('error', result.error);
+}
+```
+
+This makes error handling explicit and uniform across platforms, and keeps both the success and failure paths type‑checked.
+
+---
+
+## The services pattern
+
+Node‑side behavior lives in **services** in `shared` (and the VS Code extension's own services): `HttpService`, `WebSocketService`, `SseService`, storage/collection services, security services, and so on. Services are the single implementation of "how things actually happen" on a backend; both the VS Code extension host and the web server call into them, which is why protocol behavior is identical across platforms. Services are written to be testable in isolation (I/O is mocked), and several accept injectable factories for that purpose.
+
+---
+
+## The store pattern (Zustand)
+
+UI state lives in a single Zustand store (`useAppStateStore`) composed of **slices** — request tabs, realtime (WS/SSE) state, collections, environments, banners, and more. Slices keep related state and actions together while sharing one store. Some state is intentionally **ephemeral** (e.g. per‑tab realtime message timelines and the "Sent" request snapshot are never persisted), while domain data is loaded through the storage adapter.
+
+---
+
+## Hooks
+
+Components reach platform capabilities and state exclusively through hooks, never through globals or platform APIs:
+
+- `useAdapter()` and the focused variants (`useStorageAdapter`, `useHttpAdapter`, `useFileAdapter`, `useSecretAdapter`, `useSecurityAdapter`, `useNotificationAdapter`, `usePlatform`).
+- `useAdapterEvent` / `useAdapterEvents` for push‑event subscriptions.
+- `useAppStateStore` (and selectors) for UI state.
+- Feature hooks such as `useWsConnection`, `useSseConnection`, and `useConfirmDialog`.
+
+The rule that makes this work: **core components contain no `vsCodeApi`, `localStorage`, `fetch`, or Node APIs** — only adapter calls and hooks. Platform code lives in the `vscode`/`web` packages.
+
+---
+
+## How a request flows (end to end)
+
+1. A core component calls `adapter.http.executeRequest(config)`.
+2. **VS Code:** `vsCodeAdapter` posts the request with a `requestId`; the extension's message handler routes it to `HttpService` (in `shared`), which runs it via Node (proxies, certs, cancellation) and posts back a correlated response.
+   **Web:** `webAdapter` sends the request to the local server, which runs the same `HttpService` and returns the result.
+3. The adapter resolves a `Result`, the component updates the store, and the response viewer renders.
+
+The same shape applies to WebSocket and SSE, with the backend services streaming messages/events back as push events.
+
+---
+
+## Summary
+
+- **Portability** — one core UI, many platforms.
+- **Isolation** — all I/O behind `IPlatformAdapter`; `core` stays pure.
+- **Type‑safe errors** — `Result<T, E>` everywhere.
+- **Shared behavior** — backend logic lives once, in services.
+- **Predictable state** — a single sliced Zustand store, with ephemeral vs. persisted state clearly separated.
+
+===== FILE: docs/schemas.md =====
+
+# Wave Schemas
+
+Wave Client persists your data as plain JSON files — one file per collection and one per environment, stored under your configured app directory. This page is the **canonical reference** for those persisted shapes: the *Wave Collection Schema* and the *Wave Environment Schema*.
+
+Both schemas are formally defined as [Zod](https://zod.dev) schemas in `packages/core/src/schemas/` and validated at two boundaries:
+
+- **Import** — when you import a collection or environment file, the content is validated before anything is written. Invalid files are rejected with a descriptive error and nothing is persisted.
+- **Load** — when files are read from disk, each is normalized (missing ids and versions are stamped) and validated. A structurally invalid file is skipped with a logged error so the rest of your data still loads.
+
+> **Schema version ≠ app version.** Each schema carries its own version (currently `0.0.1` for both), independent of any package or app release. A schema version bumps **only** when the persisted shape changes, and every bump gets a migration note in the [Version history](#version-history) below. See [versioning.md](versioning.md) for how all version tracks relate.
+
+---
+
+## Wave Collection Schema (v0.0.1)
+
+A collection file is a single JSON object:
+
+| Field | Type | Required | Notes |
+| --- | --- | --- | --- |
+| `info` | object | yes | Collection metadata (below) |
+| `item` | `CollectionItem[]` | yes | Tree of folders and requests; may be empty |
+| `filename` | string | no | **Runtime-only** — added in memory at load time; tolerated in files but never required |
+
+### `info` (collection metadata)
+
+| Field | Type | Required | Notes |
+| --- | --- | --- | --- |
+| `info.waveId` | string | yes¹ | Stable logical identity of the collection |
+| `info.name` | string | yes | Display name; must be non-empty |
+| `info.description` | string | no | Free-form description |
+| `info.schema` | string | no | Legacy/reserved field |
+| `info.version` | string | yes¹ | **Schema version** of the file (`0.0.1`) |
+
+¹ Loaders stamp missing `waveId` (fresh id) and `version` (current schema version) on legacy files before validation, so older files load fine and are upgraded on next save.
+
+### `CollectionItem` (folder or request)
+
+Items nest arbitrarily deep via `item`:
+
+| Field | Type | Required | Notes |
+| --- | --- | --- | --- |
+| `id` | string | yes¹ | Unique id, stable across rename/move |
+| `name` | string | yes | Display name |
+| `description` | string | no | |
+| `request` | request object | no | Present when the item is a request (below) |
+| `response` | array | no | Saved responses — **opaque in v0.0.1** (not structurally validated) |
+| `item` | `CollectionItem[]` | no | Present when the item is a folder |
+
+### Request object
+
+Three request shapes, discriminated by `protocol`:
+
+| Field | Type | HTTP | WS | SSE | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | string | yes¹ | yes¹ | yes¹ | Stamped on load when missing |
+| `name` | string | yes¹ | yes¹ | yes¹ | Stamped from the wrapping item's name when missing |
+| `protocol` | `'http' \| 'ws' \| 'sse'` | optional² | `'ws'` | `'sse'` | ² Absent means HTTP (backward compatibility) |
+| `method` | string | yes | — | yes | HTTP verb |
+| `url` | string \| URL object | yes | yes | yes | URL object: `{ raw, protocol?, host?, path?, query? }` |
+| `query` | `ParamRow[]` | no | no | no | |
+| `header` | `HeaderRow[]` | no | no | no | |
+| `body` | body object | no | — | no | Discriminated union (below) |
+| `description` | string | no | no | no | |
+| `validation` | object | no | — | — | Response validation rules — **opaque in v0.0.1** |
+| `authId` | string | no | no | no | Reference to a stored auth config |
+| `sourceRef` | object | no | no | no | Runtime-only; stripped on save |
+
+**Rows** (`ParamRow`, `HeaderRow`): `{ id?, key, value, disabled? }`. The `id` and `disabled` fields are auto-populated at runtime and tolerated as absent in files.
+
+**Body** is a discriminated union on `mode`:
+
+| `mode` | Payload |
+| --- | --- |
+| `none` | — |
+| `raw` | `raw: string`, optional `options.raw.language` (`json`/`xml`/`html`/`text`/`csv`) |
+| `urlencoded` | `urlencoded: FormField[]` (`{ id?, key, value \| null, disabled? }`) |
+| `formdata` | `formdata: MultiPartFormField[]` (adds `fieldType: 'text' \| 'file'`, value may be a file reference) |
+| `file` | optional `file` reference: `{ path, fileName, contentType, size, pathType, storageType, fileData? }` |
+
+### Opaque fields in v0.0.1
+
+`request.validation` and `item.response` are accepted without structural validation in this schema version. Tightening them is a future schema version bump.
+
+---
+
+## Wave Environment Schema (v0.0.1)
+
+An environment file is a single JSON object (imports also accept an **array** of these):
+
+| Field | Type | Required | Notes |
+| --- | --- | --- | --- |
+| `id` | string | yes | Logical identity (`'global'` is reserved for the Global environment) |
+| `name` | string | yes | Display name; must be non-empty; also drives the filename |
+| `version` | string | yes¹ | **Schema version** of the file (`0.0.1`) |
+| `values` | `EnvironmentVariable[]` | yes | May be empty |
+| `filename` | string | no | Runtime-only |
+
+¹ Loaders stamp a missing `version` before validation; every save writes it.
+
+### `EnvironmentVariable`
+
+| Field | Type | Required | Notes |
+| --- | --- | --- | --- |
+| `key` | string | yes | Variable name used in `{{key}}` references |
+| `value` | string | yes | |
+| `type` | `'default' \| 'secret'` | yes¹ | ¹ Defaulted to `'default'` on load when missing/invalid |
+| `notes` | string | no | |
+| `enabled` | boolean | yes¹ | ¹ Defaulted to `true` on load when missing |
+
+---
+
+## Where validation happens
+
+| Boundary | Collections | Environments |
+| --- | --- | --- |
+| Import | `CollectionService.import` / `saveFromContent` — invalid input rejected, nothing written | `EnvironmentService.import` — **all-or-nothing**: if any entry is invalid, none are persisted |
+| Load | `CollectionService.loadOne` — invalid file logged & skipped; others still load | `EnvironmentService.loadAll` — invalid file logged & skipped; others still load |
+
+Validation failures surface in the UI as error notifications with the failing field paths (up to the first five issues).
+
+---
+
+## Version history
+
+| Version | Date | Changes |
+| --- | --- | --- |
+| `0.0.1` | 2026-06 | Initial formalized schemas for collections and environments. Captures the previously implicit persisted shapes; adds the required `version` field to environments. No migration needed — legacy files are normalized on load. |
+
+**Rule going forward:** any change to a persisted shape bumps the relevant schema version and adds a row here describing the change and its migration path.
+
+===== FILE: docs/versioning.md =====
+
+# Versioning
+
+Wave Client is a monorepo that ships more than one thing: two apps, a reusable platform core, and persisted file formats. A single version number can't describe all of them honestly, so Wave Client uses **four independent version tracks**, each following [semantic versioning](https://semver.org).
+
+This page defines the tracks, what a major/minor/patch bump means on each, and the exact manual checklist for bumping each one. It is the single procedure for releases — if a step isn't written here, it isn't part of the process.
+
+> **Manual for now.** Version bumps and releases are deliberate, hand-executed checklists. Release automation (changesets, CI publishing) is future work, tracked in the project backlog — see [Automation status](#automation-status).
+
+---
+
+## The four tracks
+
+| # | Track | What it versions | Where the version lives |
+| --- | --- | --- | --- |
+| 1 | **VS Code app** | The `wave-client-vscode` extension — the marketplace‑facing version users see | `packages/vscode/package.json` |
+| 2 | **Web app** | The published `wave-client` npm package (bundled server + UI) | `packages/web-app/package.json` (kept in sync with `packages/web`) |
+| 3 | **Core platform** | The shared libraries and backends, versioned **in lockstep** as one platform version | `package.json` of each platform package (list below) |
+| 4 | **Wave schemas** | The persisted **collection** and **environment** file formats | `CURRENT_COLLECTION_SCHEMA_VERSION` / `CURRENT_ENVIRONMENT_SCHEMA_VERSION` in `packages/core/src/schemas/` |
+
+Tracks move independently: an app can release without a platform bump, the platform can bump without either app releasing, and **schema versions never move just because a package released** (and vice versa).
+
+### Package‑to‑track assignment
+
+Every package in the repo belongs to exactly one track:
+
+| Package | npm name | Track |
+| --- | --- | --- |
+| `packages/vscode` | `wave-client-vscode` | 1 — VS Code app |
+| `packages/web-app` | `@abranjith/wave-client` (published) | 2 — Web app |
+| `packages/web` | `@wave-client/web` (private) | 2 — Web app |
+| `packages/core` | `@wave-client/core` | 3 — Core platform |
+| `packages/shared` | `@wave-client/shared` | 3 — Core platform |
+| `packages/arena` | `@wave-client/arena` | 3 — Core platform |
+| `packages/server` | `@wave-client/server` | 3 — Core platform¹ |
+| `packages/mcp-server` | `@wave-client/mcp-server` | 3 — Core platform¹ |
+
+¹ `server` and `mcp-server` follow the core platform track **unless/until they ship independently** (e.g., a standalone hosted server release). If that happens, they graduate to their own tracks and this page gets updated.
+
+The repo‑root `package.json` (`wave-client`, `private: true`) is the workspace root — it is never published and its version is not part of any track.
+
+The Wave schemas (track 4) are **not** a package: they are two exported constants and Zod schemas in `packages/core/src/schemas/`, documented field‑by‑field in [Wave Schemas](schemas.md). A change to `@wave-client/core`'s code bumps track 3; a change to the persisted file *shape* bumps track 4 — these are different events even though both live in the same package.
+
+---
+
+## Semver semantics per track
+
+All tracks use `MAJOR.MINOR.PATCH`. What counts as "breaking" differs by audience:
+
+### Tracks 1 & 2 — apps (audience: end users)
+
+| Bump | When |
+| --- | --- |
+| **Major** | A change that breaks an existing user workflow — removed features, an incompatible change to settings/keybindings/CLI invocation, dropped platform support |
+| **Minor** | New user‑visible features or capabilities |
+| **Patch** | Bug fixes, performance work, visual polish — no new features |
+
+### Track 3 — core platform (audience: the apps and [Build Your Own Client](build-your-own-client.md) authors)
+
+| Bump | When |
+| --- | --- |
+| **Major** | A breaking change to any platform package's public surface: `@wave-client/core` exports (components, hooks, types, `IPlatformAdapter`), `@wave-client/shared` service contracts, server REST routes, or MCP tool contracts |
+| **Minor** | Backward‑compatible additions — new exports, new optional adapter methods, new routes/tools |
+| **Patch** | Bug fixes and internal refactors with no public‑surface change |
+
+### Track 4 — Wave schemas (audience: every persisted collection/environment file on users' disks)
+
+| Bump | When |
+| --- | --- |
+| **Major** | An incompatible change to the persisted shape — existing valid files would no longer validate without migration |
+| **Minor** | Backward‑compatible shape additions (new optional fields) |
+| **Patch** | Documentation‑level clarifications or validation tightening that every existing valid file already satisfies |
+
+Schema versions bump **only** on persisted‑shape changes — never for code refactors, new app features, or package releases. Every schema bump requires a row in the [version history in Wave Schemas](schemas.md#version-history) describing the change and its migration path. The collection and environment schemas are versioned separately and may bump independently.
+
+### Pre‑1.0 convention (applies to all tracks)
+
+While a track is at `0.x`, the major slot stays `0`: **breaking changes bump the minor** (`0.3.x` → `0.4.0`) and everything else bumps the patch. A track moves to `1.0.0` when its surface is declared stable.
+
+---
+
+## The lockstep rule (track 3)
+
+The five platform packages — `core`, `shared`, `arena`, `server`, `mcp-server` — always carry the **same version number** and are bumped **together**, even when only one of them changed. One platform version describes one coherent, tested combination; per‑package drift would force a compatibility matrix nobody wants to maintain.
+
+Internal dependencies use the pnpm `workspace:*` protocol, so lockstep bumps never require editing dependency ranges — only each package's own `version` field.
+
+---
+
+## How to bump — checklists
+
+> **Before any bump**: work is merged to `main`, and `pnpm build` and `pnpm test` pass from the repo root.
+
+### Track 1 — VS Code app
+
+1. Decide the bump type using the [app semantics](#tracks-1--2--apps-audience-end-users) above.
+2. Edit `version` in `packages/vscode/package.json`.
+3. Add a release section at the **top** of [Release Notes](release-notes.md) (`## <version> — <short title>`), summarizing user‑facing changes by area.
+4. Build the extension: `pnpm build:vscode` from the repo root.
+5. Package and publish to the marketplace with [vsce](https://code.visualstudio.com/api/working-with-extensions/publishing-extension) (`vsce package`, then `vsce publish`) from `packages/vscode`.
+6. Commit with message `release(vscode): v<version>` and tag `vscode-v<version>`.
+
+### Track 2 — Web app
+
+The web app is published to npm as the self-contained `packages/web-app` package
+(`@abranjith/wave-client`), which bundles the server + UI into the `wave-client`
+CLI. `packages/web` itself is private (its build is an input to `packages/web-app`).
+
+1. Decide the bump type using the [app semantics](#tracks-1--2--apps-audience-end-users) above.
+2. Edit `version` to the same new value in `packages/web-app/package.json` and `packages/web/package.json`.
+3. Add or extend the release section at the top of [Release Notes](release-notes.md) (shared with track 1 when both apps release together).
+4. Build the publishable package: `pnpm build:web-app` from the repo root. Verify the contents with `cd packages/web-app && npm pack --dry-run` (only `dist/`, `README.md`, `LICENSE`, `package.json` — no `.ts`/`.map`).
+5. Publish to npm: `cd packages/web-app && pnpm publish` (uses `publishConfig.access: public`; `pnpm publish` rewrites the `workspace:*` build deps). Set the real scope in `packages/web-app/package.json` `name` first, and `npm login` once.
+6. Commit with message `release(web): v<version>` and tag `web-v<version>`.
+
+### Track 3 — Core platform (lockstep)
+
+1. Decide the bump type using the [platform semantics](#track-3--core-platform-audience-the-apps-and-build-your-own-client-authors) above — judge by the most severe change across **all five** packages.
+2. Edit `version` to the **same new value** in all five `package.json` files: `packages/core`, `packages/shared`, `packages/arena`, `packages/server`, `packages/mcp-server` — including packages with no changes.
+3. Do **not** touch internal dependency ranges (`workspace:*` — see [the lockstep rule](#the-lockstep-rule-track-3)).
+4. If the changes are user‑visible through an app, note them in the next app release's [Release Notes](release-notes.md) entry; platform‑internal changes need no release‑notes entry.
+5. Build and test everything: `pnpm build` and `pnpm test` from the repo root.
+6. Commit with message `release(platform): v<version>` and tag `platform-v<version>`.
+
+### Track 4 — Wave schemas
+
+1. Confirm the change really alters a **persisted shape** (a field added/removed/retyped in collection or environment files). If not, stop — no schema bump.
+2. Decide the bump type using the [schema semantics](#track-4--wave-schemas-audience-every-persisted-collectionenvironment-file-on-users-disks) above.
+3. Update the affected constant in `packages/core/src/schemas/` — `CURRENT_COLLECTION_SCHEMA_VERSION` (`collectionSchema.ts`) and/or `CURRENT_ENVIRONMENT_SCHEMA_VERSION` (`environmentSchema.ts`) — alongside the Zod schema change itself.
+4. For anything beyond a backward‑compatible addition, implement load‑time normalization/migration so existing files keep loading (the loaders already stamp missing `version`/ids — extend that path).
+5. Update [Wave Schemas](schemas.md): the field tables **and** a new row in the [version history](schemas.md#version-history) with the change description and migration path. This row is mandatory for every bump.
+6. Update/add schema tests, then run `pnpm test` from the repo root.
+7. Commit with message `release(schema): collection v<version>` / `release(schema): environment v<version>` as applicable. A schema bump ships with whatever package release carries the code — it never requires one.
+
+---
+
+## Automation status
+
+Releases are **manual** today by design — the process above is young, and automating it before it stabilizes would bake in the wrong shape. Adopting release tooling (changesets or similar CI publishing) once the manual process settles is tracked in the project backlog (`.spec-lite/TODO.md`).
+
+===== FILE: docs/build-your-own-client.md =====
+
+# Build Your Own Client
+
+Wave Client is designed so the **client** — VS Code, the browser, or anything else — is a thin shell around a shared, platform‑agnostic core. The VS Code extension and the web app are simply the first two clients; the architecture is **not limited to them**. This guide is for anyone who wants to build a new one: a CLI, a desktop (Electron) app, a mobile client, a different editor integration, or something we haven't thought of.
+
+Read the [Design & Architecture guide](design.md) first for the big picture; this page focuses on the practical steps.
+
+---
+
+## The core idea
+
+Everything platform-independent — UI components, state, business logic, types, and pure utilities — lives in [`@wave-client/core`](../packages/core/README.md). Anything that touches the outside world (storage, HTTP, files, secrets, encryption, notifications, clipboard, real-time connections) is expressed as an **interface**, `IPlatformAdapter`. A client provides one concrete implementation of that interface for its environment.
+
+```
+@wave-client/core (UI + logic)  ──uses──▶  IPlatformAdapter (interface)
+                                                  ▲
+                                   your client provides the implementation
+```
+
+So "building a client" mostly means **implementing `IPlatformAdapter`** for your platform and wiring it in.
+
+---
+
+## Two kinds of clients
+
+**1. UI clients** reuse the core React UI (like VS Code and the web app). You implement the adapter, then wrap the shared UI with it. Best when you want the full Wave Client experience in a new host.
+
+**2. Headless clients** (for example, a CLI) may skip the React UI entirely. Instead they reuse:
+- [`@wave-client/shared`](../packages/shared/README.md) — the Node-side **services** (`HttpService`, `WebSocketService`, `SseService`, collection/environment/validation logic), and
+- [`@wave-client/core`](../packages/core/README.md) — **types** and pure **utilities** (collection parsing, variable/`_fn_` resolution, JSONPath helpers).
+
+…and present results however you like (terminal output, JSON, etc.).
+
+---
+
+## The contract: `IPlatformAdapter`
+
+Defined in [`packages/core/src/types/adapters.ts`](../packages/core/src/types/adapters.ts). A client implements these:
+
+| Member | Kind | Responsibility |
+| --- | --- | --- |
+| `storage` | required | Collections, environments, history, cookies, auth, proxies, certs, validation rules, settings |
+| `http` | required | Execute (and cancel) HTTP requests |
+| `file` | required | File dialogs and read/write/import/download |
+| `secret` | required | Secure key storage |
+| `security` | required | Encryption enable/disable, password change, recovery key |
+| `notification` | required | User notifications and dialogs |
+| `arena` | required | AI assistant storage/streaming integration |
+| `clipboard` | required | Read/write the platform clipboard |
+| `events` | required | Push-event emitter (banners, "data changed" signals, …) |
+| `realtime` | optional | WebSocket/SSE connections (UI guards against its absence) |
+| `platform` | required | Identifier: `'vscode' | 'web' | 'test'` |
+| `initialize?()` / `dispose?()` | optional | Lifecycle hooks |
+
+Every fallible method returns a typed [`Result<T, E>`](design.md#the-result-pattern) instead of throwing.
+
+> **Adding a new platform id:** the `platform` field is currently typed `'vscode' | 'web' | 'test'`. A brand-new client (e.g. `'cli'`) needs that union extended in `packages/core/src/types/adapters.ts`. Until then, a new client can reuse `'web'` or `'test'` while prototyping.
+
+---
+
+## Building a UI client
+
+### 1. Implement the adapter
+
+Create one object that satisfies `IPlatformAdapter`. Each sub-adapter delegates to your platform's capabilities and returns `Result` values.
+
+```ts
+import {
+  createAdapterEventEmitter,
+  type IPlatformAdapter,
+} from '@wave-client/core';
+
+export function createMyAdapter(): IPlatformAdapter {
+  const events = createAdapterEventEmitter();
+
+  return {
+    platform: 'web', // until your platform id is added to the union
+
+    storage: {
+      async loadCollections() {
+        // ...read from your platform...
+        return { isOk: true, value: collections };
+        // on failure: return { isOk: false, error: 'message' };
+      },
+      // ...the rest of IStorageAdapter...
+    },
+
+    http: {
+      async executeRequest(config) {
+        // ...run the request on your platform...
+        return { isOk: true, value: response };
+      },
+    },
+
+    // file, secret, security, notification, arena, clipboard ...
+
+    events,
+
+    // realtime is optional — omit it and the UI hides WS/SSE features
+    async initialize() {/* warm up connections, load config */},
+    dispose() {/* clean up */},
+  };
+}
+```
+
+> Tip: study [`packages/web/src/adapters/webAdapter.ts`](../packages/web/src/adapters/webAdapter.ts) (HTTP-to-server) and [`packages/vscode/src/webview/adapters/vsCodeAdapter.ts`](../packages/vscode/src/webview/adapters/vsCodeAdapter.ts) (postMessage with `requestId` correlation) as reference implementations.
+
+### 2. Wire the UI to your adapter
+
+Wrap the shared app with `AdapterProvider`:
+
+```tsx
+import { AdapterProvider } from '@wave-client/core';
+import { createMyAdapter } from './myAdapter';
+
+const adapter = createMyAdapter();
+
+root.render(
+  <AdapterProvider adapter={adapter}>
+    <App />
+  </AdapterProvider>
+);
+```
+
+Core components access the adapter through `useAdapter()` and the focused hooks (`useStorageAdapter`, `useHttpAdapter`, …) and subscribe to push events with `useAdapterEvent`. You write none of that — it already exists in core.
+
+---
+
+## Building a headless client (e.g. a CLI)
+
+A non-UI client doesn't need `AdapterProvider` or React. Compose the shared pieces directly:
+
+```ts
+import { HttpService } from '@wave-client/shared';
+import { resolveParameterizedValue } from '@wave-client/core';
+
+// 1. Resolve {{variables}} and _fn_ functions in the request
+// 2. Execute via the shared HTTP service
+// 3. Validate the response with the shared validation engine
+// 4. Print / write the result however your client presents output
+```
+
+This reuses the exact request execution, variable resolution, and validation logic the GUI clients use — so behavior stays consistent across every client.
+
+---
+
+## Testing your client
+
+Core ships a mock adapter so you can render and test UI without a real platform:
+
+```tsx
+import { AdapterProvider, createMockAdapter } from '@wave-client/core';
+
+const mock = createMockAdapter();
+render(
+  <AdapterProvider adapter={mock}>
+    <App />
+  </AdapterProvider>
+);
+```
+
+For your real adapter, test each sub-adapter in isolation — they're plain async functions returning `Result` values, so they mock and assert cleanly.
+
+---
+
+## Guidelines
+
+- **Keep core pure.** Never add platform-specific code (`fs`, `vscode`, browser-only APIs) to `@wave-client/core`. All platform behavior belongs in your adapter.
+- **Always return `Result`.** Don't throw across the adapter boundary; return `{ isOk: false, error }` so the shared UI/logic can handle failures uniformly.
+- **Reuse shared services** for anything network/IO-heavy rather than reimplementing protocols.
+- **Emit push events** (via `events`) for state changes and banners so the UI stays in sync.
+
+---
+
+## Related guides
+- [Design & Architecture](design.md) — the adapter pattern, services, store, and Result pattern in depth
+- [`@wave-client/core`](../packages/core/README.md) — what the core package provides
+- [`@wave-client/shared`](../packages/shared/README.md) — the reusable Node-side services
+
+===== FILE: docs/release-notes.md =====
+
+# Release Notes
+
+> Wave Client is in **public beta**. This page highlights what each release brings. For exact change history, see source control.
+
+---
+
+## Beta update — auth schemes, structured test authoring, placeholders & result accuracy
+
+A feature‑heavy pass that expands authentication, turns the Test Lab into a structured authoring surface, adds per‑request placeholder overrides, makes collection import/move workflows complete, and makes run results accurate and consistent everywhere.
+
+### Authentication
+- **Three new auth types** — **OAuth2 Client Credentials**, **OAuth2 Authorization Code (PKCE, manual code/URL paste)**, and **HMAC** request signing, configured end‑to‑end. See [Auth](features/auth.md).
+- **Cleaned‑up config** — Digest now configures only username/password (all other parameters come from the server challenge); the misleading "Base64 Encode Credentials" option and unused fields were removed. OAuth2 types now require an explicit **client auth method**, and a **no‑assumed‑defaults** policy means you choose every value that affects how a credential is computed (challenge method, HMAC algorithm/encoding, …).
+
+### Requests & Variables
+- **Request placeholders** — a new **Placeholders** tab lets you preview and **temporarily override** the `{{variables}}` a request uses (URL, params, headers, body), without touching environments. Overrides are per‑tab, in‑memory only, take precedence over environment values, and turn overridden variables green in the editor. See [Variables](features/variables.md).
+
+### Collections
+- **Import into an existing collection** — merge an imported file into any collection or folder (all‑or‑nothing on name conflicts), or create a new collection with an explicit, validated name (no more silent overwrites).
+- **New Folder** — create validated folders in place from the collection/folder menus.
+- **Folder Move** — Move now works on folders too, carrying the whole subtree; all moves are atomic (validate‑first, with rollback on cross‑collection failure).
+- **Import‑time replacements** — apply `find → replace` rules (literal or regex) to request URLs and bodies during import, e.g. swap a Swagger host for `{{ApiBaseUrl}}`. Swagger specs with no server URL now generate a `{{<Name>Url}}` placeholder instead of a fake host. See [Collections](features/collections.md).
+- **Save write‑back fixes** — saved‑tab breadcrumbs no longer duplicate/drop path segments, wizard‑saved tabs link correctly to their collection, the dirty dot clears reliably, and both apps show one identical success notification.
+
+### Test Lab
+- **Structured test case editor** — per‑case overrides for variables, headers, query params, and **body** (None / Raw / File / Form URL‑Encoded / Multipart) now have proper table editors, replacing the raw‑JSON sections. Detected request placeholders prepopulate the variables table.
+- **Validation overrides in the UI** — add or link assertions per test case with an **inline** rule editor (no nested modal).
+- **Richer display & a formal schema** — the suite list shows full names, untruncated descriptions, and an override summary; test suites now have a formal, validated schema documented in the [Test Suite Schema Reference](test-suite-schema.md).
+
+### Results & reporting
+- **Friendly errors** — DNS, connection, timeout, and TLS failures show a clear message and hint instead of `HTTP 0` / `Unknown Error`.
+- **Validation‑aware status** — a request that *expects* a non‑2xx status (e.g. an "expect 400" rule) now counts as **Passed**; a 200 with a failing validation counts as **Failed**. A failing test case rolls its item and suite up to Failed.
+- **Sent request everywhere** — run cards and HTML reports show the actual on‑wire request (the "Sent" snapshot), consistently across the collection runner, flows, test suites, and reports. See [Reporting](features/reporting.md).
+
+### UI
+- Flow and Test Suite toolbars regroup editing vs. running controls; Test Suite **Run Settings** is now a self‑contained collapsible section in the editor body; results side‑panels widen responsively on larger screens.
+
+---
+
+## Beta update — import fidelity, cancellation & collection integrity
+
+A stabilization pass across collections, environments, requests, and history, plus formalized file schemas and versioning docs.
+
+### Requests
+- **Cancel in-flight requests** — while a request is processing, **Send** becomes **Cancel**; aborting stops the actual outbound call on both apps and settles the viewer in a distinct "Request cancelled" state.
+- **Ctrl+S / Cmd+S** saves the active request from the request editor (direct save, or the Save dialog for unsaved requests) — see [keyboard shortcuts](features/requests.md#keyboard-shortcuts).
+- **Response download fixed** on both apps — downloads now honor the real response bytes, a sensible filename, and the response content type.
+- **History refreshes in real time** — the History pane updates immediately after each send, no reload needed.
+- Tighter request-editor spacing, with Params/Headers **Copy/Paste** buttons relocated into the table header.
+
+### Collections
+- **Full `.http` / `.rest` import syntax** — `###` separators, `#` and `//` comments, `# @name` directives, file-variable lines, optional methods, multi-line URLs, and automatic unique request naming. See [Collections](features/collections.md).
+- **Content-based format auto-detection** on import — Postman, OpenAPI/Swagger, `.http`, and Wave files are recognized from their content, with the dropdown as a manual override.
+- **Reliable collection operations** — rename, delete, and move now persist dependably; item identity is stable across rename/move/duplicate; naming rules (non-empty, sibling-unique) are enforced everywhere.
+- **Clearer Move & Save dialog** — shows the request's current location, offers a single searchable destination picker listing every collection and folder (any depth), and blocks moves that would overwrite an existing item.
+
+### Environments
+- **Postman environment import** with an auto-detected, overridable **Environment Type** dropdown; secret-typed Postman variables import as Wave secrets. See [Environments](features/environments.md).
+
+### Schemas & versioning
+- The persisted collection and environment formats are now formal, versioned schemas (both `0.0.1`), validated at import and load — documented field by field in [Wave Schemas](schemas.md).
+- How Wave Client versions evolve is now documented in [Versioning](versioning.md): four independent tracks with per-track semver semantics and bump checklists.
+
+---
+
+## Beta — Initial public release
+
+The first public beta of Wave Client, available as both a **VS Code extension** and a **standalone web app** with feature parity between them.
+
+### Requests & Protocols
+- HTTP requests with all common methods, visual editors for **params, headers, and body**.
+- Body types: **None, Raw** (JSON / XML / HTML / Text / CSV), **URL‑encoded, multipart Form‑data** (text + file fields), and **File**.
+- **WebSocket** and **Server‑Sent Events (SSE)** connections with live Messages/Events panels.
+- A request‑side **"Sent"** view showing the exact on‑wire request (final URL, headers, display‑safe body).
+- A default `User-Agent` is added when you don't supply one.
+- See [Requests](features/requests.md).
+
+### Collections & Import
+- Nested **collections/folders**, with **rename, delete (confirmed), move, and duplicate**.
+- Import from **Postman (v2.1.0)**, **OpenAPI 3.x / Swagger 2.0** (JSON or YAML), and **HTTP** files; export support.
+- Run collections with a **result explorer**.
+- See [Collections](features/collections.md).
+
+### Environments & Variables
+- **Environments** with global and environment‑specific values, import/export.
+- `{{variable}}` resolution plus **dynamic `_fn_` functions** (UUIDs, random numbers/strings, dates/times, names, addresses, contacts).
+- See [Environments](features/environments.md) and [Variables](features/variables.md).
+
+### Authentication & Wave Store
+- Auth types: **API Key, Basic, Digest, OAuth2 (refresh token)**, with domain filters.
+- **Wave Store** for reusable **cookies, auth, proxies, and client certificates (mTLS)**.
+- See [Auth](features/auth.md) and [Wave Store](features/wave-store.md).
+
+### Validations
+- Response validation by **status, headers, and body**, using full **JSONPath** and **JSON Schema (draft‑07)**; defaults to 2xx success when no rules are set.
+- See [Validations](features/validations.md).
+
+### Flows
+- Visual **flow canvas** chaining requests, with **conditional connectors** (including validation pass/fail) and **readable aliases** for JSONPath data passing between steps.
+- See [Flows](features/flows.md).
+
+### Test Lab
+- **Test suites** that run multiple requests with assertions and report pass/fail.
+- See [Test Lab](features/tests.md).
+
+### Reporting
+- Interactive, self‑contained **HTML run reports** for collections, flows, and test suites (search, status filtering, expand/collapse).
+- See [Reporting](features/reporting.md).
+
+### AI / Wave Arena
+- In‑app **AI assistant** for web‑standards questions and tool‑backed workspace help, with slash commands and confirmation‑gated run actions.
+- An **MCP server** to expose your workspace to external AI tools.
+- See [AI & Wave Arena](features/ai-arena.md).
+
+### Settings & Security
+- Settings wizard for **data storage**, **encryption** (with recovery key), and **AI** configuration.
+- See [Settings](features/settings.md).
+
+---
+
+## How releases are logged
+
+Going forward, each release adds a new section at the top of this page summarizing notable additions and changes, grouped by area. This page reflects highlights, not an exhaustive changelog — use git history for the complete record.
