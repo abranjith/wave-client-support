@@ -1,5 +1,7 @@
 # Build Your Own Client
 
+> **🚧 This guide is for contributors only.**
+
 Wave Client is designed so the **client** — VS Code, the browser, or anything else — is a thin shell around a shared, platform‑agnostic core. The VS Code extension and the web app are simply the first two clients; the architecture is **not limited to them**. This guide is for anyone who wants to build a new one: a CLI, a desktop (Electron) app, a mobile client, a different editor integration, or something we haven't thought of.
 
 Read the [Design & Architecture guide](design.md) first for the big picture; this page focuses on the practical steps.
