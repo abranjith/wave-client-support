@@ -14,7 +14,7 @@
 
 Build and send requests, organize them into collections, parameterize with environments, validate responses, chain requests into flows and test suites, and even ask a built‑in AI assistant for help.
 
-Available today as a **VS Code extension** and a **web app** — and architected so new clients (a CLI and beyond) can be built on the same core.
+Available today as a **VS Code extension** and a **web app** — and architected so new clients (a CLI and beyond) can be built on the same core. See [Build Your Own Client](docs/build-your-own-client.md).
 
 **Public beta** · See the [Release Notes](docs/release-notes.md) for what's included.
 
@@ -64,6 +64,9 @@ npx @abranjith/wave-client          # or: npm i -g @abranjith/wave-client && wav
 Contributors can run it from source in dev mode (`pnpm install && pnpm dev:web` → http://localhost:5173).
 → [Web app guide](docs/platforms/web-app.md)
 
+### Build your own
+The core isn't tied to these two — a CLI, desktop, or other client is just a new adapter. → [Build Your Own Client](docs/build-your-own-client.md)
+
 ---
 
 ## Architecture, in brief
@@ -72,16 +75,16 @@ Wave Client is a **monorepo** built around the **adapter pattern**: a platform�
 
 | Package | Role |
 | --- | --- |
-| [`packages/core`](packages/core/README.md) | Platform‑agnostic UI, state, and logic |
-| [`packages/vscode`](packages/vscode/README.md) | VS Code extension |
-| [`packages/web`](packages/web/README.md) | Browser app |
-| [`packages/server`](packages/server/README.md) | Local backend for the web app |
+| `packages/core` | Platform‑agnostic UI, state, and logic |
+| `packages/vscode` | VS Code extension |
+| `packages/web` | Browser app |
+| `packages/server` | Local backend for the web app |
 | `packages/web-app` | Publishable npm package — bundles server + UI into the `wave-client` CLI |
-| [`packages/shared`](packages/shared/README.md) | Shared Node‑side services |
-| [`packages/arena`](packages/arena/README.md) | AI engine (Wave Arena) |
-| [`packages/mcp-server`](packages/mcp-server/README.md) | MCP server for external AI tools |
+| `packages/shared` | Shared Node‑side services |
+| `packages/arena` | AI engine (Wave Arena) |
+| `packages/mcp-server` | MCP server for external AI tools |
 
-Full details in the [Design & Architecture guide](docs/design.md).
+Because of this, adding a new client (a CLI, a desktop app, …) means implementing one adapter rather than rebuilding the app. Full details in the [Design & Architecture guide](docs/design.md) and the [Build Your Own Client](docs/build-your-own-client.md) guide.
 
 ---
 
