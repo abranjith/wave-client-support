@@ -9,7 +9,7 @@ The steps are identical in the VS Code extension and the web app.
 ## 1. Open Wave Client
 
 - **VS Code:** run **Wave Client: Open Wave Client** from the Command Palette, or press **`Ctrl+Alt+W`** / **`Cmd+Alt+W`**.
-- **Web app:** open **http://localhost:5173** after running `pnpm dev:web`.
+- **Web app:** open **http://localhost:3456** after installing package (*Coming soon*).
 
 You'll see a left **sidebar** with tabs (Collections, Flows, Test Lab, Wave Arena, History, Environments, Wave Store) and a main area with the **request editor**.
 

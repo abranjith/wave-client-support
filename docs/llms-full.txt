@@ -218,7 +218,7 @@ The steps are identical in the VS Code extension and the web app.
 ## 1. Open Wave Client
 
 - **VS Code:** run **Wave Client: Open Wave Client** from the Command Palette, or press **`Ctrl+Alt+W`** / **`Cmd+Alt+W`**.
-- **Web app:** open **http://localhost:5173** after running `pnpm dev:web`.
+- **Web app:** open **http://localhost:3456** after installing package (*Coming soon*).
 
 You'll see a left **sidebar** with tabs (Collections, Flows, Test Lab, Wave Arena, History, Environments, Wave Store) and a main area with the **request editor**.
 
@@ -1751,6 +1751,8 @@ Releases are **manual** today by design — the process above is young, and auto
 ===== FILE: docs/build-your-own-client.md =====
 
 # Build Your Own Client
+
+> **🚧 This document is for Contributors only.**
 
 Wave Client is designed so the **client** — VS Code, the browser, or anything else — is a thin shell around a shared, platform‑agnostic core. The VS Code extension and the web app are simply the first two clients; the architecture is **not limited to them**. This guide is for anyone who wants to build a new one: a CLI, a desktop (Electron) app, a mobile client, a different editor integration, or something we haven't thought of.
 
