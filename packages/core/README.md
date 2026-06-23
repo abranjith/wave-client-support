@@ -4,7 +4,7 @@ The platform‑agnostic heart of Wave Client — all UI, state, and logic, with 
 
 ## Purpose
 
-`@wave-client/core` exists so Wave Client can be written **once** and run on multiple platforms (the VS Code extension and the web app today). It contains no direct I/O — all platform operations go through the [adapter pattern](https://github.com/abranjith/wave-client-support/tree/main/docs/design.md), which keeps this package portable.
+`@wave-client/core` exists so Wave Client can be written **once** and run on multiple platforms (the VS Code extension and the web app today). It contains no direct I/O — all platform operations go through the [adapter pattern](../../docs/design.md), which keeps this package portable.
 
 ## Responsibilities
 
@@ -15,4 +15,4 @@ The platform‑agnostic heart of Wave Client — all UI, state, and logic, with 
 
 ## Documentation
 
-See the full documentation at [`docs/`](https://github.com/abranjith/wave-client-support/tree/main/docs/README.md) — in particular the [Design & Architecture guide](https://github.com/abranjith/wave-client-support/tree/main/docs/design.md).
+See the full documentation at [`docs/`](../../docs/README.md) — in particular the [Design & Architecture guide](../../docs/design.md).

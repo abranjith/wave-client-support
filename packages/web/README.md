@@ -10,7 +10,7 @@ The Wave Client **web app** — runs the shared Wave Client UI in the browser.
 
 ## Purpose
 
-This package delivers Wave Client as a standalone browser application. It reuses the platform‑agnostic UI from core package and bridges it to a local backend server through a web platform adapter, so the browser app has the same capabilities as the VS Code extension.
+This package delivers Wave Client as a standalone browser application. It reuses the platform‑agnostic UI from [`@wave-client/core`](../core/README.md) and bridges it to a local backend ([`@wave-client/server`](../server/README.md)) through a web platform adapter, so the browser app has the same capabilities as the VS Code extension.
 
 ## Responsibilities
 
@@ -19,4 +19,4 @@ This package delivers Wave Client as a standalone browser application. It reuses
 
 ## Documentation
 
-See the full documentation at [`docs/`](https://github.com/abranjith/wave-client-support/tree/main/docs/README.md) — start with the [Web app guide](https://github.com/abranjith/wave-client-support/tree/main/docs/platforms/web-app.md). For how the adapter works, see [Design & Architecture](https://github.com/abranjith/wave-client-support/tree/main/docs/design.md).
+See the full documentation at [`docs/`](../../docs/README.md) — start with the [Web app guide](../../docs/platforms/web-app.md). For how the adapter works, see [Design & Architecture](../../docs/design.md).

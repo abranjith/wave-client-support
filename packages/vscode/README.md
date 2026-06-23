@@ -10,7 +10,7 @@ The Wave Client **VS Code extension** — runs the shared Wave Client UI inside 
 
 ## Purpose
 
-This package delivers Wave Client as a native VS Code extension, so you can build and send API requests right next to your code. It reuses the platform‑agnostic UI from core package and bridges it to VS Code through a platform adapter.
+This package delivers Wave Client as a native VS Code extension, so you can build and send API requests right next to your code. It reuses the platform‑agnostic UI from [`@wave-client/core`](../core/README.md) and bridges it to VS Code through a platform adapter.
 
 ## Responsibilities
 
@@ -20,4 +20,4 @@ This package delivers Wave Client as a native VS Code extension, so you can buil
 
 ## Documentation
 
-See the full documentation at [`docs/`](https://github.com/abranjith/wave-client-support/tree/main/docs/README.md) — start with the [VS Code platform guide](https://github.com/abranjith/wave-client-support/tree/main/docs/platforms/vscode.md). For how the adapter works, see [Design & Architecture](https://github.com/abranjith/wave-client-support/tree/main/docs/design.md).
+See the full documentation at [`docs/`](../../docs/README.md) — start with the [VS Code platform guide](../../docs/platforms/vscode.md). For how the adapter works, see [Design & Architecture](../../docs/design.md).

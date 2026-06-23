@@ -17,4 +17,4 @@ The browser can't safely do everything Wave Client needs — file access, HTTP e
 
 ## Documentation
 
-See the full documentation at [`docs/`](https://github.com/abranjith/wave-client-support/tree/main/docs/README.md) — start with the [Web app guide](https://github.com/abranjith/wave-client-support/tree/main/docs/platforms/web-app.md). For architecture, see [Design & Architecture](https://github.com/abranjith/wave-client-support/tree/main/docs/design.md).
+See the full documentation at [`docs/`](../../docs/README.md) — start with the [Web app guide](../../docs/platforms/web-app.md). For architecture, see [Design & Architecture](../../docs/design.md).

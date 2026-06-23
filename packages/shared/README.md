@@ -15,4 +15,4 @@ This package holds the logic that both backends — the VS Code extension host a
 
 ## Documentation
 
-See the full documentation at [`docs/`](https://github.com/abranjith/wave-client-support/tree/main/docs/README.md) — for how services fit the overall design, see [Design & Architecture](https://github.com/abranjith/wave-client-support/tree/main/docs/design.md).
+See the full documentation at [`docs/`](../../docs/README.md) — for how services fit the overall design, see [Design & Architecture](../../docs/design.md).

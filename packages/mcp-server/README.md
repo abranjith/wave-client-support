@@ -23,4 +23,4 @@ npx @modelcontextprotocol/inspector node packages/mcp-server/dist/index.js
 
 ## Documentation
 
-See the full documentation at [`docs/`](https://github.com/abranjith/wave-client-support/tree/main/docs/README.md) — start with [AI & Wave Arena](https://github.com/abranjith/wave-client-support/tree/main/docs/features/ai-arena.md).
+See the full documentation at [`docs/`](../../docs/README.md) — start with [AI & Wave Arena](../../docs/features/ai-arena.md).
