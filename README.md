@@ -144,6 +144,16 @@ And many more. Grateful to all the maintainers of these projects (and to the ope
 
 ---
 
+## Important Notice
+
+> [!IMPORTANT]
+> Wave Client is free to use.
+> You should never pay anyone (in crypto or otherwise) to access or use this software.
+> Any person, group, or service demanding payment while claiming it is required for Wave Client is not affiliated with the project and is likely a scam.
+> Please do not encourage or support such requests.
+
+---
+
 ## License
 
 See the [LICENSE](LICENSE) file for details.
