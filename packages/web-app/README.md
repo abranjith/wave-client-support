@@ -8,21 +8,21 @@ The Wave Client **web app** — runs the shared Wave Client UI in the browser.
 
 ## Purpose
 
-This package delivers Wave Client as a standalone web application. It reuses the platform‑agnostic UI from [`@wave-client/core`](../core/README.md) and bridges it to a local backend ([`@wave-client/server`](../server/README.md)) through a web platform adapter.
+This package delivers Wave Client as a standalone web application. It reuses the platform‑agnostic UI from [`@wave-client/core`](https://github.com/abranjith/wave-client-support/blob/main/packages/core/README.md) and bridges it to a local backend ([`@wave-client/server`](https://github.com/abranjith/wave-client-support/blob/main/packages/server/README.md)) through a web platform adapter.
 
 ## What you can do
 
 - **Requests beyond HTTP** — HTTP, **WebSocket**, and **SSE**, with rich body editors and a "Sent" view of the exact outgoing request.
-- **Organize** — nested [collections](../../docs/features/collections.md) with import (Postman, OpenAPI/Swagger, HTTP) and export.
-- **Parameterize** — [environments](../../docs/features/environments.md), `{{variables}}`, and dynamic [`_fn_` functions](../../docs/features/variables.md).
-- **Authenticate** — API Key, Basic, Digest, OAuth2 (Refresh, Client Credentials, Authorization Code/PKCE), and HMAC, plus a reusable [Wave Store](../../docs/features/wave-store.md) for cookies, auth, proxies, and certificates.
-- **Validate** — response checks via [JSONPath and JSON Schema](../../docs/features/validations.md).
-- **Automate** — [flows](../../docs/features/flows.md), [test suites](../../docs/features/tests.md), and exportable [run reports](../../docs/features/reporting.md).
-- **AI built in** — [Wave Arena](../../docs/features/ai-arena.md) and an MCP server for external AI tools.
+- **Organize** — nested [collections](https://github.com/abranjith/wave-client-support/blob/main/docs/features/collections.md) with import (Postman, OpenAPI/Swagger, HTTP) and export.
+- **Parameterize** — [environments](https://github.com/abranjith/wave-client-support/blob/main/docs/features/environments.md), `{{variables}}`, and dynamic [`_fn_` functions](https://github.com/abranjith/wave-client-support/blob/main/docs/features/variables.md).
+- **Authenticate** — API Key, Basic, Digest, OAuth2 (Refresh, Client Credentials, Authorization Code/PKCE), and HMAC, plus a reusable [Wave Store](https://github.com/abranjith/wave-client-support/blob/main/docs/features/wave-store.md) for cookies, auth, proxies, and certificates.
+- **Validate** — response checks via [JSONPath and JSON Schema](https://github.com/abranjith/wave-client-support/blob/main/docs/features/validations.md).
+- **Automate** — [flows](https://github.com/abranjith/wave-client-support/blob/main/docs/features/flows.md), [test suites](https://github.com/abranjith/wave-client-support/blob/main/docs/features/tests.md), and exportable [run reports](https://github.com/abranjith/wave-client-support/blob/main/docs/features/reporting.md).
+- **AI built in** — [Wave Arena](https://github.com/abranjith/wave-client-support/blob/main/docs/features/ai-arena.md) and an MCP server for external AI tools.
 
 ## Documentation
 
-See the full documentation at [`docs/`](../../docs/README.md) — start with the [Web app guide](../../docs/platforms/web-app.md). For how the adapter works, see [Design & Architecture](../../docs/design.md).
+See the full documentation at [`docs/`](https://github.com/abranjith/wave-client-support/blob/main/docs/README.md) — start with the [Web app guide](https://github.com/abranjith/wave-client-support/blob/main/docs/platforms/web-app.md). For how the adapter works, see [Design & Architecture](https://github.com/abranjith/wave-client-support/blob/main/docs/design.md).
 
 ## Feedback & Community
 
