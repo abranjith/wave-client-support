@@ -22,7 +22,7 @@ This package delivers Wave Client as a standalone web application. It reuses the
 
 ## Documentation
 
-See the full documentation at [`docs/`](https://github.com/abranjith/wave-client-support/blob/main/docs/README.md) — start with the [Web app guide](https://github.com/abranjith/wave-client-support/blob/main/docs/platforms/web-app.md). For how the adapter works, see [Design & Architecture](https://github.com/abranjith/wave-client-support/blob/main/docs/design.md).
+See the full documentation at [`docs/`](https://github.com/abranjith/wave-client-support/blob/main/docs/README.md) — start with the [Web app guide](https://github.com/abranjith/wave-client-support/blob/main/docs/platforms/web-app.md). To understand the overall architecture, see [Design & Architecture](https://github.com/abranjith/wave-client-support/blob/main/docs/design.md).
 
 ## Feedback & Community
 

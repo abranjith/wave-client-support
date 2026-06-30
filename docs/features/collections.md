@@ -34,7 +34,7 @@ The pane header includes three quick actions:
 
 Each collection, folder, and request row has an action menu with consistent operations:
 
-- **Run** — run the item (a request, or everything under a collection/folder).
+- **Run** — run the requests under the selected item (everything under a collection/folder).
 - **Rename** — inline rename, with sibling‑level uniqueness checks (press **Enter** to commit, **Escape** to cancel).
 - **Delete** — guarded by a confirmation dialog (deleting a folder removes its whole subtree).
 - **New Folder** — create a validated empty folder under a collection or any folder, from the collection header or a folder's menu. The name must be non‑empty and unique among its siblings (case‑insensitive); the new folder appears expanded in place.
@@ -56,7 +56,8 @@ Requests additionally support:
 
 Wave Client imports several formats and converts them into Wave collections automatically:
 
-- **Postman Collection** (v2.1.0)
+- **Postman Collection** (v2.1.0) - Note that only v2 is supported; you can make use of external tools such as [postman-collection-transformer](https://github.com/postmanlabs/postman-collection-transformer) for transforming older collections before importing.
+The import reads the Postman JSON and converts it to a Wave collection, preserving requests, folders, headers, query parameters, and bodies. Postman variables are imported as-is (e.g., `{{var}}`), and you can resolve them with Wave [environments](environments.md) after import.
 - **OpenAPI / Swagger** — OpenAPI 3.x and Swagger 2.0, in **JSON or YAML** (inline `$ref`s are resolved during import). When the spec declares no server URL, request URLs are prefixed with a generated placeholder derived from the collection name (e.g. `{{PetstoreAPIUrl}}/path`) for you to fill in — rather than a fake host.
 - **HTTP** files (`.http` / `.rest`) — the [ASP.NET Core / VS Code REST Client format](https://learn.microsoft.com/en-us/aspnet/core/test/http-files), with full syntax support:
   - Requests separated by `###` lines (text after `###` becomes the request name)

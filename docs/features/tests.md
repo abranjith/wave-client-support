@@ -37,7 +37,7 @@ The headers, params, and variables tables behave like the request editor's (styl
 
 > **Override presence = intent.** Empty sections are omitted on save, so they fall back to the base request. Variable, header, and body overrides may contain secrets — they are kept with the suite file and never logged.
 
-The test‑suite list shows each test case's full name, its (untruncated) description, and a compact summary of which overrides it defines.
+The test‑suite list shows each test case's full name, its description, and a compact summary of which overrides it defines.
 
 ---
 

@@ -24,7 +24,7 @@ This package delivers Wave Client as a native VS Code extension, so you can buil
 
 ## Documentation
 
-See the full documentation at [`docs/`](https://github.com/abranjith/wave-client-support/blob/main/docs/README.md) — start with the [VS Code platform guide](https://github.com/abranjith/wave-client-support/blob/main/docs/platforms/vscode.md). For how the adapter works, see [Design & Architecture](https://github.com/abranjith/wave-client-support/blob/main/docs/design.md).
+See the full documentation at [`docs/`](https://github.com/abranjith/wave-client-support/blob/main/docs/README.md) — start with the [VS Code platform guide](https://github.com/abranjith/wave-client-support/blob/main/docs/platforms/vscode.md). To understand the overall architecture, see [Design & Architecture](https://github.com/abranjith/wave-client-support/blob/main/docs/design.md).
 
 ## Feedback & Community
 

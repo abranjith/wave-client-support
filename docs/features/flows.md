@@ -42,7 +42,7 @@ To grab an alias quickly, hover a node's alias to open a card with a **Copy** bu
 
 ![The node alias hover card with the Copy button](../images/flows-alias-copy.png)
 
-> Body references are evaluated with a full JSONPath engine, so recursive descent, wildcards, filters, and slices all behave consistently. (The older dot‑form `{{alias.$body.data.id}}` is intentionally not supported — use the `:` + `$` form above.)
+> Body references are evaluated with a full JSONPath engine, so recursive descent, wildcards, filters, and slices all behave consistently.
 
 ---
 
