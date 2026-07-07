@@ -6,7 +6,13 @@
   &nbsp;@wave-client/vscode
 </h1>
 
-The Wave Client **VS Code extension** — runs the shared Wave Client UI inside VS Code.
+The Wave Client **VS Code extension** — a completely offline, local‑first API client that requires **no login** and features built‑in AI tools, running the shared Wave Client UI natively inside VS Code.
+
+Wave Client is a privacy‑respecting, lightweight client for developers, QA engineers, and IT professionals who want a no‑nonsense environment to test and manage APIs:
+
+- **100% local‑first & offline** — your data stays entirely on your machine. No mandatory cloud sync, no tracking telemetry.
+- **Zero sign‑in nonsense** — start testing right away without creating yet another SaaS account.
+- **Seamless VS Code integration** — manage environments, global variables, and request collections natively within your workspace.
 
 ## Purpose
 

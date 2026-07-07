@@ -4,7 +4,13 @@
 
 > **🚧 Not yet published — coming soon.** The npm command below is a preview. For now, run it from source in dev mode (Contributors only).
 
-The Wave Client **web app** — runs the shared Wave Client UI in the browser.
+The Wave Client **web app** — a completely offline, local‑first API client that requires **no login** and features built‑in AI tools, running the shared Wave Client UI in your browser.
+
+Wave Client is a privacy‑respecting, lightweight client for developers, QA engineers, and IT professionals who want a no‑nonsense environment to test and manage APIs:
+
+- **100% local‑first & offline** — your data stays entirely on your machine. No mandatory cloud sync, no tracking telemetry.
+- **Zero sign‑in nonsense** — start testing right away without creating yet another SaaS account.
+- **Self‑hostable** — run it on your own infrastructure via Docker for maximum data control.
 
 ## Purpose
 

@@ -1,6 +1,13 @@
 # Wave Client Documentation
 
-**Wave Client** is a modern, platform‑agnostic REST API client that runs both as a **Visual Studio Code extension** and as a **standalone web app**. It helps you build, send, organize, and validate API requests — and chain them into automated flows and test suites — with the same interface everywhere.
+**Wave Client** is a completely offline, local‑first API client that requires **no login** and features built‑in AI tools. It runs both as a **Visual Studio Code extension** and as a self‑hostable **standalone web app** (*coming soon*), helping you build, send, organize, and validate API requests — and chain them into automated flows and test suites — with the same interface everywhere.
+
+It's a privacy‑respecting, lightweight client for developers, QA engineers, and IT professionals who want a no‑nonsense environment to test and manage APIs:
+
+- **100% local‑first & offline** — your data stays entirely on your machine. No mandatory cloud sync, no tracking telemetry.
+- **Zero sign‑in nonsense** — start testing right away without creating yet another SaaS account.
+- **Seamless VS Code integration** — manage environments, global variables, and request collections natively within your workspace.
+- **Self‑hostable** — run it on your own infrastructure via Docker for maximum data control.
 
 > **Wave Client is currently in public beta.** Features are stable enough for everyday use, but some areas are still evolving. See the [Release Notes](release-notes.md).
 
