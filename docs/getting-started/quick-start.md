@@ -1,5 +1,9 @@
 # Quick Start
 
+## CLI track
+
+For a terminal-first start, run `wvc send https://httpbin.org/get --json`, then use `wvc collection create "My API"` to create a workspace collection. See the [CLI guide](../platforms/cli.md) for the full command reference.
+
 This guide walks you through sending your first request and saving it for later. It assumes Wave Client is already installed — if not, start with [Installation](installation.md).
 
 The steps are identical in the VS Code extension and the web app.

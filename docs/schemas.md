@@ -23,6 +23,8 @@ A collection file is a single JSON object:
 
 ### `info` (collection metadata)
 
+For legacy files, `info.waveId` may be absent on disk. It is derived deterministically from the normalized filename at load time, without writing the file; renaming such a file changes the derived id.
+
 | Field | Type | Required | Notes |
 | --- | --- | --- | --- |
 | `info.waveId` | string | yes¹ | Stable logical identity of the collection |

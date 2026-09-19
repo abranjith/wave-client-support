@@ -31,6 +31,7 @@ Build and send requests, organize them into collections, parameterize with envir
 **Full documentation lives in [`docs/`](docs/README.md) — start there.**
 
 Quick links:
+- [CLI (`wvc`)](docs/platforms/cli.md) for terminal, CI, and AI-agent workflows
 - [Installation](docs/getting-started/installation.md) · [Quick Start](docs/getting-started/quick-start.md)
 - Features: [Requests](docs/features/requests.md) · [Collections](docs/features/collections.md) · [Environments](docs/features/environments.md) · [Variables](docs/features/variables.md) · [Auth](docs/features/auth.md) · [Validations](docs/features/validations.md) · [Wave Store](docs/features/wave-store.md) · [Flows](docs/features/flows.md) · [Test Lab](docs/features/tests.md) · [Reporting](docs/features/reporting.md) · [Settings](docs/features/settings.md) · [AI & Wave Arena](docs/features/ai-arena.md)
 - Platforms: [VS Code](docs/platforms/vscode.md) · [Web app](docs/platforms/web-app.md)
@@ -54,7 +55,7 @@ Quick links:
 
 ## Clients
 
-Wave Client runs as multiple clients over one shared, platform‑agnostic core. Two are available today, and the [adapter architecture](docs/design.md) makes it straightforward to add more.
+Wave Client runs as three shipped clients over one shared, platform-agnostic core.
 
 ### VS Code extension
 Run **Wave Client: Open Wave Client** from the Command Palette, or press **`Ctrl+Alt+W`** / **`Cmd+Alt+W`**. → [VS Code guide](docs/platforms/vscode.md)
@@ -68,6 +69,17 @@ npx @abranjith/wave-client          # or: npm i -g @abranjith/wave-client && wav
 ```
 Contributors can run it from source in dev mode (`pnpm install && pnpm dev:web` → http://localhost:5173).
 → [Web app guide](docs/platforms/web-app.md)
+
+### CLI (`wvc`)
+
+Use the shipped headless client in a terminal, script, CI job, or AI-agent workflow:
+
+```bash
+npm install -g @abranjith/wave-client-cli
+wvc docs --json
+```
+
+See the [CLI guide](docs/platforms/cli.md).
 
 ### Build your own
 The core isn't tied to these two — a CLI, desktop, or other client is just a new adapter. → [Build Your Own Client](docs/build-your-own-client.md)
@@ -88,6 +100,7 @@ Wave Client is a **monorepo** built around the **adapter pattern**: a platform�
 | [`packages/shared`](packages/shared/README.md) | Shared Node‑side services |
 | [`packages/arena`](packages/arena/README.md) | AI engine (Wave Arena) |
 | [`packages/mcp-server`](packages/mcp-server/README.md) | MCP server for external AI tools |
+| [`packages/cli`](packages/cli/README.md) | Headless `wvc` command-line client |
 
 Because of this, adding a new client (a CLI, a desktop app, …) means implementing one adapter rather than rebuilding the app. Full details in the [Design & Architecture guide](docs/design.md) and the [Build Your Own Client](docs/build-your-own-client.md) guide.
 
@@ -95,7 +108,7 @@ Because of this, adding a new client (a CLI, a desktop app, …) means implement
 
 ## Versioning
 
-Wave Client versions four things independently, each with its own semver: the **VS Code extension**, the **web app**, the **core platform** (the five shared packages, bumped in lockstep), and the **Wave schemas** (the persisted collection/environment file formats, which only move when the on‑disk shape changes). Releases are manual checklists for now — the tracks, semantics, and step‑by‑step bump procedures are documented in [docs/versioning.md](docs/versioning.md).
+Wave Client versions five things independently: the **VS Code extension**, **web app**, **CLI**, **core platform**, and **Wave schemas**. The semver tracks and manual bump checklists are documented in [docs/versioning.md](docs/versioning.md).
 
 ---
 

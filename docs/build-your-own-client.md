@@ -28,7 +28,7 @@ So "building a client" mostly means **implementing `IPlatformAdapter`** for your
 
 **2. Headless clients** (for example, a CLI) may skip the React UI entirely. Instead they reuse:
 - [`@wave-client/shared`](../packages/shared/README.md) — the Node-side **services** (`HttpService`, `WebSocketService`, `SseService`, collection/environment/validation logic), and
-- [`@wave-client/core`](../packages/core/README.md) — **types** and pure **utilities** (collection parsing, variable/`_fn_` resolution, JSONPath helpers).
+- [`@wave-client/core/headless`](../packages/core/README.md#entry-points) — **types**, schemas, executors, report builders, and pure **utilities** (collection parsing, variable/`_fn_` resolution, JSONPath helpers).
 
 …and present results however you like (terminal output, JSON, etc.).
 
@@ -133,7 +133,7 @@ A non-UI client doesn't need `AdapterProvider` or React. Compose the shared piec
 
 ```ts
 import { HttpService } from '@wave-client/shared';
-import { resolveParameterizedValue } from '@wave-client/core';
+import { resolveParameterizedValue } from '@wave-client/core/headless';
 
 // 1. Resolve {{variables}} and _fn_ functions in the request
 // 2. Execute via the shared HTTP service
@@ -143,6 +143,19 @@ import { resolveParameterizedValue } from '@wave-client/core';
 
 This reuses the exact request execution, variable resolution, and validation logic the GUI clients use — so behavior stays consistent across every client.
 
+### Reading the workspace
+
+Shared storage services (`collectionService`, `environmentService`, …) read and write through an `ISecurityService` that you install once at startup. Headless clients use `PlainJsonSecurityService`, the standard plain-JSON implementation shipped by `@wave-client/shared`:
+
+```ts
+import { setSecurityServiceInstance, PlainJsonSecurityService, settingsService } from '@wave-client/shared';
+
+setSecurityServiceInstance(new PlainJsonSecurityService());
+await settingsService.load();
+```
+
+It reads and writes the workspace as plain JSON — it does not decrypt. A workspace encrypted by the VS Code extension therefore falls back to empty defaults. The MCP server, the HTTP server, and the `wvc` CLI all use it.
+
 ---
 
 ## Testing your client
@@ -150,7 +163,8 @@ This reuses the exact request execution, variable resolution, and validation log
 Core ships a mock adapter so you can render and test UI without a real platform:
 
 ```tsx
-import { AdapterProvider, createMockAdapter } from '@wave-client/core';
+import { AdapterProvider } from '@wave-client/core';
+import { createMockAdapter } from '@wave-client/core/testing';
 
 const mock = createMockAdapter();
 render(
@@ -170,6 +184,7 @@ For your real adapter, test each sub-adapter in isolation — they're plain asyn
 - **Always return `Result`.** Don't throw across the adapter boundary; return `{ isOk: false, error }` so the shared UI/logic can handle failures uniformly.
 - **Reuse shared services** for anything network/IO-heavy rather than reimplementing protocols.
 - **Emit push events** (via `events`) for state changes and banners so the UI stays in sync.
+- **Use the headless entry for non-UI code.** CLI, server, MCP, and shared-service packages should import from `@wave-client/core/headless`, never the full `@wave-client/core` UI barrel.
 
 ---
 

@@ -1,5 +1,7 @@
 # Wave Client Documentation
 
+Wave Client is available as a VS Code extension, web app, and the headless [`wvc` CLI](platforms/cli.md).
+
 **Wave Client** is a completely offline, local‑first API client that requires **no login** and features built‑in AI tools. It runs both as a **Visual Studio Code extension** and as a self‑hostable **standalone web app** (*coming soon*), helping you build, send, organize, and validate API requests — and chain them into automated flows and test suites — with the same interface everywhere.
 
 It's a privacy‑respecting, lightweight client for developers, QA engineers, and IT professionals who want a no‑nonsense environment to test and manage APIs:
@@ -51,11 +53,12 @@ New to Wave Client? Follow these in order:
 ### Platform guides
 - [VS Code extension](platforms/vscode.md) — command, keybinding, storage, and theme integration
 - [Web app](platforms/web-app.md) — running the local server + UI, ports, and troubleshooting
+- [CLI (`wvc`)](platforms/cli.md) — install, the full command reference, and the agent guide (`--json` shapes + exit codes)
 
 ### Reference
 - [Design & Architecture](design.md) — how Wave Client is built (for the architecture‑curious)
 - [Wave Schemas](schemas.md) — the persisted collection & environment file formats, field by field
-- [Versioning](versioning.md) — the four version tracks, semver semantics, and the release bump checklists
+- [Versioning](versioning.md) — the five version tracks, semver semantics, and the release bump checklists
 - [Build Your Own Client](build-your-own-client.md) — use the platform-agnostic core to build a new client (CLI, desktop, …)
 - [Release Notes](release-notes.md) — what's in each release
 

@@ -41,6 +41,25 @@ The test‑suite list shows each test case's full name, its description, and a c
 
 ---
 
+## Authoring test cases from the CLI
+
+The `wvc` CLI can create, edit, remove, and inspect the cases attached to a suite item:
+
+```bash
+wvc suite add-case item-1 --name "Valid login" --var user=ada
+wvc suite edit-case item-1 case-1 --enabled false
+wvc suite list-cases item-1 --json
+wvc suite remove-case item-1 case-1 --yes
+```
+
+An item id resolves directly across all suites. If an item name is shared by multiple suites, add
+`-s/--suite <ref>` to narrow the lookup. Simple flags cover common overrides; full JSON through
+`--file`, `--stdin`, or `--edit` preserves every field and is required for case-level validation.
+Flow cases accept variables only. See the [CLI guide](../platforms/cli.md#test-suites) for the full
+syntax, agent workflow, and exit-code behavior.
+
+---
+
 ## Running a suite
 
 Run the suite to execute every request in order and evaluate its assertions. Each item runs once per enabled test case, applying that case's overrides. The result shows per‑request pass/fail and an overall summary, which you can export — see [Reporting](reporting.md).

@@ -1,6 +1,6 @@
 # Versioning
 
-Wave Client is a monorepo that ships more than one thing: two apps, a reusable platform core, and persisted file formats. A single version number can't describe all of them honestly, so Wave Client uses **four independent version tracks**, each following [semantic versioning](https://semver.org).
+Wave Client is a monorepo that ships more than one thing: three apps, a reusable platform core, and persisted file formats. A single version number can't describe all of them honestly, so Wave Client uses **five independent version tracks**, each following [semantic versioning](https://semver.org).
 
 This page defines the tracks, what a major/minor/patch bump means on each, and the exact manual checklist for bumping each one. It is the single procedure for releases — if a step isn't written here, it isn't part of the process.
 
@@ -8,7 +8,7 @@ This page defines the tracks, what a major/minor/patch bump means on each, and t
 
 ---
 
-## The four tracks
+## The five tracks
 
 | # | Track | What it versions | Where the version lives |
 | --- | --- | --- | --- |
@@ -16,6 +16,7 @@ This page defines the tracks, what a major/minor/patch bump means on each, and t
 | 2 | **Web app** | The published `wave-client` npm package (bundled server + UI) | `packages/web-app/package.json` (kept in sync with `packages/web`) |
 | 3 | **Core platform** | The shared libraries and backends, versioned **in lockstep** as one platform version | `package.json` of each platform package (list below) |
 | 4 | **Wave schemas** | The persisted **collection** and **environment** file formats | `CURRENT_COLLECTION_SCHEMA_VERSION` / `CURRENT_ENVIRONMENT_SCHEMA_VERSION` in `packages/core/src/schemas/` |
+| 5 | **CLI app** | The published `@abranjith/wave-client-cli` package (the `wvc` binary) | `packages/cli/package.json` |
 
 Tracks move independently: an app can release without a platform bump, the platform can bump without either app releasing, and **schema versions never move just because a package released** (and vice versa).
 
@@ -33,8 +34,11 @@ Every package in the repo belongs to exactly one track:
 | `packages/arena` | `@wave-client/arena` | 3 — Core platform |
 | `packages/server` | `@wave-client/server` | 3 — Core platform¹ |
 | `packages/mcp-server` | `@wave-client/mcp-server` | 3 — Core platform¹ |
+| `packages/cli` | `@abranjith/wave-client-cli` (published, bin `wvc`) | 5 — CLI app |
 
 ¹ `server` and `mcp-server` follow the core platform track **unless/until they ship independently** (e.g., a standalone hosted server release). If that happens, they graduate to their own tracks and this page gets updated.
+
+The CLI (`packages/cli`, track 5) consumes `@wave-client/core` and `@wave-client/shared` as **bundled devDependencies** (inlined into its published bundle), so it ships on its own cadence and its version moves independently of the core platform track — a platform bump does not force a CLI release, and vice versa.
 
 The repo‑root `package.json` (`wave-client`, `private: true`) is the workspace root — it is never published and its version is not part of any track.
 
@@ -46,13 +50,17 @@ The Wave schemas (track 4) are **not** a package: they are two exported constant
 
 All tracks use `MAJOR.MINOR.PATCH`. What counts as "breaking" differs by audience:
 
-### Tracks 1 & 2 — apps (audience: end users)
+### Tracks 1, 2 & 5 — apps (audience: end users)
+
+Applies to the VS Code app, the web app, and the CLI (`wvc`).
 
 | Bump | When |
 | --- | --- |
-| **Major** | A change that breaks an existing user workflow — removed features, an incompatible change to settings/keybindings/CLI invocation, dropped platform support |
-| **Minor** | New user‑visible features or capabilities |
+| **Major** | A change that breaks an existing user workflow — removed features, an incompatible change to settings/keybindings, a breaking change to a CLI command/flag/exit-code contract, dropped platform support |
+| **Minor** | New user‑visible features or capabilities (a new command or flag for the CLI) |
 | **Patch** | Bug fixes, performance work, visual polish — no new features |
+
+The CLI is currently at `0.1.0` and follows the [pre‑1.0 convention](#pre10-convention-applies-to-all-tracks) below; its `--json` output shapes and exit-code table are the surfaces to treat as breaking.
 
 ### Track 3 — core platform (audience: the apps and [Build Your Own Client](build-your-own-client.md) authors)
 
@@ -130,6 +138,18 @@ CLI. `packages/web` itself is private (its build is an input to `packages/web-ap
 5. Update [Wave Schemas](schemas.md): the field tables **and** a new row in the [version history](schemas.md#version-history) with the change description and migration path. This row is mandatory for every bump.
 6. Update/add schema tests, then run `pnpm test` from the repo root.
 7. Commit with message `release(schema): collection v<version>` / `release(schema): environment v<version>` as applicable. A schema bump ships with whatever package release carries the code — it never requires one.
+
+### Track 5 — CLI app
+
+The CLI is published to npm as `@abranjith/wave-client-cli` (bin `wvc`). Its build is a single self-contained esbuild bundle: `@wave-client/core` and `@wave-client/shared` are inlined, third-party deps stay external.
+
+1. Decide the bump type using the [app semantics](#tracks-1-2--5--apps-audience-end-users) above — judge by the CLI's command/flag/`--json`/exit-code surface.
+2. Edit `version` in `packages/cli/package.json`.
+3. If the change is user‑visible, add or extend the release section at the top of [Release Notes](release-notes.md).
+4. Build the bundle: `pnpm build:cli` from the repo root. The build copies the repo `LICENSE` into the package and **fails** if any React-family package becomes a runtime external or if any imported external is missing from `dependencies`.
+5. Verify the tarball contents: `cd packages/cli && npm pack --dry-run` — it must contain exactly `dist/`, `README.md`, `LICENSE`, and `package.json` (no `.ts`/`.map`, no `meta.json`). Optionally run `node scripts/verify-pack.mjs` for a scripted check plus a packed-install smoke run (`wvc --version`, `wvc docs`).
+6. Publish to npm: `cd packages/cli && pnpm publish` (uses `publishConfig.access: public`; `pnpm publish` rewrites the `workspace:*` build deps out of the tarball). Run `npm login` once first.
+7. Commit with message `release(cli): v<version>` and tag `cli-v<version>`.
 
 ---
 

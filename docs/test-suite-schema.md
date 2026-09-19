@@ -43,6 +43,10 @@ At run time the test runner:
 4. Validates the response using the test case's validation rules (or falls back to
    item-level, then request-level, then the default rule set).
 
+Headless execution of this schema lives in `@wave-client/core` as `executeTestSuite`
+(`packages/core/src/utils/executors/testSuiteExecutor.ts`). The MCP server and the
+`wvc` CLI both call it, so a suite behaves identically wherever it runs.
+
 ---
 
 ## Override Semantics

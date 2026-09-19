@@ -52,7 +52,14 @@ Run a flow to execute its nodes in order, following connector conditions. The re
 
 ---
 
+## CLI
+
+The `wvc` CLI supports flow discovery and execution: `wvc flow list`, `wvc flow show <ref>`, and `wvc flow run <ref> --json`. Use `wvc flow create`, `edit`, and `delete` for scripted workspace changes. See the [CLI guide](../platforms/cli.md).
+
+---
+
 ## Related guides
+
 - [Collections](collections.md) — source of the requests you add to a flow
 - [Variables](variables.md) — `{{...}}` resolution basics
 - [Validations](validations.md) — branch connectors on pass/fail

@@ -7,6 +7,8 @@
 
 # Wave Client Documentation
 
+Wave Client is available as a VS Code extension, web app, and the headless [`wvc` CLI](platforms/cli.md).
+
 **Wave Client** is a completely offline, local‑first API client that requires **no login** and features built‑in AI tools. It runs both as a **Visual Studio Code extension** and as a self‑hostable **standalone web app** (*coming soon*), helping you build, send, organize, and validate API requests — and chain them into automated flows and test suites — with the same interface everywhere.
 
 It's a privacy‑respecting, lightweight client for developers, QA engineers, and IT professionals who want a no‑nonsense environment to test and manage APIs:
@@ -58,11 +60,12 @@ New to Wave Client? Follow these in order:
 ### Platform guides
 - [VS Code extension](platforms/vscode.md) — command, keybinding, storage, and theme integration
 - [Web app](platforms/web-app.md) — running the local server + UI, ports, and troubleshooting
+- [CLI (`wvc`)](platforms/cli.md) — install, the full command reference, and the agent guide (`--json` shapes + exit codes)
 
 ### Reference
 - [Design & Architecture](design.md) — how Wave Client is built (for the architecture‑curious)
 - [Wave Schemas](schemas.md) — the persisted collection & environment file formats, field by field
-- [Versioning](versioning.md) — the four version tracks, semver semantics, and the release bump checklists
+- [Versioning](versioning.md) — the five version tracks, semver semantics, and the release bump checklists
 - [Build Your Own Client](build-your-own-client.md) — use the platform-agnostic core to build a new client (CLI, desktop, …)
 - [Release Notes](release-notes.md) — what's in each release
 
@@ -115,7 +118,9 @@ For a tour of capabilities, see the [Release Notes](release-notes.md). For the "
 
 # Installation
 
-Wave Client comes in two flavors. Pick the one that fits how you work — or use both; they share the same features and file formats.
+Wave Client comes in three forms: the VS Code extension, web app, and the headless CLI.
+
+Pick the Wave Client surface that fits how you work. All three clients share the same workspace formats.
 
 - **[VS Code extension](#vs-code-extension)** — runs inside your editor, right next to your code.
 - **[Web app](#web-app)** — runs in your browser, backed by a small local server.
@@ -144,6 +149,19 @@ Wave Client comes in two flavors. Pick the one that fits how you work — or use
 Wave Client opens in an editor tab. Your collections, environments, history, and settings are stored by the extension on your machine — see [Settings](../features/settings.md) for where data lives and how to encrypt it.
 
 Continue to the **[Quick Start](quick-start.md)**.
+
+---
+
+## CLI (`wvc`)
+
+Install the CLI with Node.js 18.18 or newer:
+
+```bash
+npm install -g @abranjith/wave-client-cli
+wvc docs --json
+```
+
+It uses the same Wave workspace as the other clients. See the [CLI guide](../platforms/cli.md) for commands and data-directory precedence.
 
 ---
 
@@ -215,6 +233,10 @@ Both share the same UI, the same request/collection/environment formats, and the
 ===== FILE: docs/getting-started/quick-start.md =====
 
 # Quick Start
+
+## CLI track
+
+For a terminal-first start, run `wvc send https://httpbin.org/get --json`, then use `wvc collection create "My API"` to create a workspace collection. See the [CLI guide](../platforms/cli.md) for the full command reference.
 
 This guide walks you through sending your first request and saving it for later. It assumes Wave Client is already installed — if not, start with [Installation](installation.md).
 
@@ -992,7 +1014,14 @@ Run a flow to execute its nodes in order, following connector conditions. The re
 
 ---
 
+## CLI
+
+The `wvc` CLI supports flow discovery and execution: `wvc flow list`, `wvc flow show <ref>`, and `wvc flow run <ref> --json`. Use `wvc flow create`, `edit`, and `delete` for scripted workspace changes. See the [CLI guide](../platforms/cli.md).
+
+---
+
 ## Related guides
+
 - [Collections](collections.md) — source of the requests you add to a flow
 - [Variables](variables.md) — `{{...}}` resolution basics
 - [Validations](validations.md) — branch connectors on pass/fail
@@ -1040,6 +1069,25 @@ The headers, params, and variables tables behave like the request editor's (styl
 > **Override presence = intent.** Empty sections are omitted on save, so they fall back to the base request. Variable, header, and body overrides may contain secrets — they are kept with the suite file and never logged.
 
 The test‑suite list shows each test case's full name, its description, and a compact summary of which overrides it defines.
+
+---
+
+## Authoring test cases from the CLI
+
+The `wvc` CLI can create, edit, remove, and inspect the cases attached to a suite item:
+
+```bash
+wvc suite add-case item-1 --name "Valid login" --var user=ada
+wvc suite edit-case item-1 case-1 --enabled false
+wvc suite list-cases item-1 --json
+wvc suite remove-case item-1 case-1 --yes
+```
+
+An item id resolves directly across all suites. If an item name is shared by multiple suites, add
+`-s/--suite <ref>` to narrow the lookup. Simple flags cover common overrides; full JSON through
+`--file`, `--stdin`, or `--edit` preserves every field and is required for case-level validation.
+Flow cases accept variables only. See the [CLI guide](../platforms/cli.md#test-suites) for the full
+syntax, agent workflow, and exit-code behavior.
 
 ---
 
@@ -1197,7 +1245,11 @@ Pick your AI provider and model in **Settings → Arena / AI Settings** (see [Se
 
 ---
 
-## MCP server (for external AI tools)
+## CLI for external AI tools (recommended)
+
+`wvc` is the supported agent surface. Start with `wvc docs --json`, then use `--json` commands to inspect and operate on a Wave workspace with stable exit codes and machine-readable output. See the [CLI guide](../platforms/cli.md).
+
+## MCP server (older compatibility path)
 
 Wave Client also ships an **MCP (Model Context Protocol) server** that exposes your workspace to *external* AI agents (for example, an AI assistant in another tool). Through it, an agent can inspect collections and requests, search endpoints, read environments (with secrets masked), and list/run flows and test suites.
 
@@ -1343,6 +1395,345 @@ In the web app, your collections, environments, history, and stores are stored o
 - [Quick Start](../getting-started/quick-start.md)
 - [Settings](../features/settings.md)
 - [VS Code extension](vscode.md) — the editor‑integrated alternative
+
+===== FILE: docs/platforms/cli.md =====
+
+# CLI (`wvc`)
+
+`wvc` is the Wave Client command line — a third platform alongside the [VS Code extension](vscode.md) and the [web app](web-app.md). It reads and writes the **same on-disk workspace** (`~/.waveclient` by default) as the other two, with no server and no UI. It is built to be equally good for humans (colors, spinners, examples in `--help`) and for AI agents and scripts (`--json` output, stable exit codes, a self-documenting `wvc docs` command).
+
+The npm package is [`@abranjith/wave-client-cli`](https://www.npmjs.com/package/@abranjith/wave-client-cli); the installed binary is `wvc`.
+
+> **Agents:** jump to [For AI agents](#for-ai-agents). The single best starting point is `wvc docs --json`.
+
+---
+
+## Install
+
+```bash
+npm install -g @abranjith/wave-client-cli
+wvc --version
+```
+
+Or run it without installing:
+
+```bash
+npx @abranjith/wave-client-cli send https://api.example.com/health
+```
+
+Requires Node.js **≥ 18.18.0**. The published package is a single self-contained bundle — Wave's own code is inlined and only a handful of third-party runtime dependencies are installed.
+
+---
+
+## Where your data lives
+
+`wvc` operates on the **existing** Wave workspace — the same collections, environments, flows, test suites, store profiles, settings, and history the VS Code extension and web app use. The workspace directory is resolved in this order:
+
+1. `--data-dir <path>` (global flag)
+2. `WAVE_DATA_DIR` environment variable
+3. the persisted **Data Storage Location** setting (when no explicit override is set)
+4. `~/.waveclient` (default)
+
+A relative `--data-dir ./ws` is resolved against your **current working directory**, not your home directory.
+
+> **This precedence applies to `wvc` only.** The VS Code extension and web app always use their configured **Data Storage Location**; a `WAVE_DATA_DIR` in your environment does not redirect them. Headless clients (`wvc`, the web-app server, the MCP server) opt into the override explicitly, so setting the variable for CLI work cannot silently move the GUI's workspace.
+
+An explicit `WAVE_DATA_DIR` always overrides the GUI's Data Storage Location setting. If the resolved directory is missing or empty, human-mode commands print a warning naming its absolute path instead of silently implying the workspace has no data.
+
+> **Plain-JSON only (encrypted workspaces).** Like the MCP server and the HTTP server, `wvc` reads and writes the workspace as **plain JSON and never decrypts**. If a workspace was encrypted in the VS Code extension, `wvc` cannot read those files and falls back to defaults (an empty-looking workspace) rather than failing. Use `wvc` against an unencrypted workspace. See [Settings → Security](../features/settings.md#security-settings).
+>
+> **Encrypted files are never modified.** An encrypted collection is invisible to `wvc`, but it is never overwritten by it: the collection fails to load, so references to it cannot resolve (exit `4`), and creating a collection whose filename would collide writes a suffixed file (`secret_api_1.json`) instead of replacing the original. Pointing `wvc` at an encrypted workspace is safe — it just will not show you anything.
+
+---
+
+## Command reference
+
+Every command has `--help` with an **Examples** block, and `wvc docs` prints the whole tree at once. Machine-readable form: `wvc docs --json`.
+
+### Sending requests
+
+```bash
+wvc send <request|url> [options]
+```
+
+`wvc send` is **dual-mode**. A target beginning with `http://` or `https://` is sent as a one-off **ad-hoc URL**; anything else is resolved as a **saved request** reference (by id, name, or unique prefix).
+
+- **Saved-request flags:** `-c, --collection <ref>` (scope resolution), `--no-validate`, `-i/--include`, `--full`, `-o/--output <path>`, `--fail`.
+- **Ad-hoc URL flags:** `-X/--method`, repeatable `-H/--header`, `-d/--data` (`@file` or `@-` for stdin), `--data-json`, repeatable `-F/--form` (`key=value` or `key=@file`), repeatable `--query key=value`, `-u/--user user:pass` (inline Basic auth), `--proxy <ref|off>`, `--cert <ref|off>`.
+- **Shared execution flags** (both modes): `-e/--env`, `--auth`, `--var`, `--timeout`, `--insecure`.
+
+Mixing modes is an error: URL-only flags with a saved-request target, or `-c`/`--no-validate` with a URL target, exit `2` and name the offending flag. A saved-ref miss that looks like a bare host (e.g. `example.com`) exits `4` with a `did you mean https://example.com?` hint.
+
+An HTTP 4xx/5xx status is a **successful send** (curl semantics) unless `--fail` is passed. Only transport failures and failed validation are execution failures (exit `3`).
+
+`-o/--output <path>` saves the response body instead of printing it. A path that names a directory (trailing slash, or an existing directory) saves into that directory under a filename derived from the response — the `Content-Disposition` header if present, otherwise a timestamped name using the content type's extension (e.g. `response_2026-07-12T16-08-09.png`) — since a response is new data, not an update to a file whose name you already know. Any other path is used as the exact file to write and is overwritten if it already exists.
+
+```bash
+wvc send "Get User"                                   # saved, by name
+wvc send "Get User" -c "Users API" -i                 # scoped, show headers
+wvc send https://api.example.com/users --json         # ad-hoc URL
+wvc send https://api.example.com/users -d '{"n":1}' --data-json
+wvc send https://api.example.com/upload -F file=@report.pdf
+```
+
+### Collections and requests
+
+```bash
+wvc collection list [--json]
+wvc collection show <ref> [--tree]
+wvc collection create <name>
+wvc collection rename <ref> <newName>
+wvc collection delete <ref> [--yes]
+wvc collection import <file> [--format wave|postman|openapi|http] [--name <name>]
+wvc collection export <ref> [--format wave|postman] [-o <file>]
+wvc collection run <ref> [--folder <path>] [--request <ref>]... [--concurrency <n>] [--delay <ms>] [--stop-on-failure] [--report [file]]
+
+wvc request show <ref> [-c <coll>]
+wvc request add [-c <coll>] (flags or JSON)
+wvc request edit <ref> [-c <coll>] (flags or JSON)
+wvc request delete <ref> [-c <coll>] [--yes]
+
+wvc search <query> [-c <coll>] [--limit <n>]
+```
+
+Collection references also match the file name (with or without `.json`) and the collection's `waveId`. Import auto-detects the format from content when `--format` is omitted (Wave, Postman, OpenAPI/Swagger, or `.http`). Export emits Wave or Postman JSON to stdout or `-o`.
+
+### Flows
+
+```bash
+wvc flow list [--json]
+wvc flow show <ref>
+wvc flow run <ref> [--sequential] [--report [file]]
+wvc flow create (--file|--stdin|--edit)
+wvc flow edit <ref> (--file|--stdin|--edit)
+wvc flow delete <ref> [--yes]
+```
+
+Flows run in parallel by default; `--sequential` opts into ordered execution. Nodes missing canvas coordinates get a default grid layout before validation.
+
+### Test suites
+
+```bash
+wvc suite list [--json]
+wvc suite show <ref>
+wvc suite run <ref> [--report [file]]
+wvc suite create (--file|--stdin|--edit)
+wvc suite edit <ref> (--file|--stdin|--edit)
+wvc suite delete <ref> [--yes]
+wvc suite add-test <suiteRef> (--request <ref> | --flow <ref>)
+wvc suite remove-test <suiteRef> <itemRef> [--yes]
+wvc suite add-case <itemRef> [-s <suite>] (flags or JSON)
+wvc suite edit-case <itemRef> <caseRef> [-s <suite>] (flags or JSON)
+wvc suite remove-case <itemRef> <caseRef> [-s <suite>] [--yes]
+wvc suite list-cases <itemRef> [-s <suite>] [--json]
+```
+
+Test-case commands are **item-anchored**: `<itemRef>` resolves by id, exact name, or unique
+substring across every suite. Item ids are globally unique and need no suite reference; pass
+`-s/--suite <ref>` only when the same item name appears in multiple suites. `list-cases --json`
+emits the complete, lossless case array so an agent can inspect a case, modify it, and send it back
+through `edit-case --stdin`.
+
+Simple flags cover variables (`--var` and `--empty-var`) plus request-only headers, query params,
+body, and auth. These fields follow the merge/replace behavior in the
+[Test Suite Schema Reference](../test-suite-schema.md); use `--file`, `--stdin`, or `--edit` for
+full JSON and validation rules. Flow cases accept variable overrides only—request-only fields or
+validation fail with exit `2`. Case names must be unique within their item, ignoring case and
+surrounding whitespace. Invalid payloads and duplicate names exit `2`; missing or ambiguous
+item/case references exit `4`.
+
+### Environments
+
+```bash
+wvc env list [--json]
+wvc env show <ref> [--reveal]
+wvc env create <name>
+wvc env delete <ref> [--yes]
+wvc env set <ref> <key=value>... [--secret]
+wvc env unset <ref> <key>...
+wvc env import <file>
+wvc env export [-o <file>]
+```
+
+`env show` masks `type: secret` variable values unless `--reveal` is passed. `env set` splits on the first `=`, so `env set staging TOKEN=a=b` stores the value `a=b`.
+
+### Wave Store (read-only)
+
+```bash
+wvc store auth list [--json]
+wvc store auth show <ref>
+wvc store proxy list [--json]
+wvc store proxy show <ref>
+wvc store cert list [--json]
+wvc store cert show <ref>
+```
+
+Store profiles are **read-only** in the CLI (create/edit them in the VS Code extension or web app). Credential material — auth secrets, proxy passwords, certificate keys — is **always masked**, including under `--json`. There is no `--reveal` for store profiles.
+
+### Settings and history
+
+```bash
+wvc settings list [--json]
+wvc settings get <key>
+wvc settings set <key> <value>
+wvc history list [--limit <n>]
+wvc history show <id>
+```
+
+`settings set` updates existing dot-path keys only, coercing the value to the current setting's type. An unknown key or an invalid type exits `2`. Credential-like settings are always masked by `settings list` and `settings get`, including with `--json`; there is no reveal override. `encryptionKeyEnvVar` remains visible because it is only an environment-variable name.
+
+### Self-documentation
+
+```bash
+wvc docs           # human-readable command reference
+wvc docs --json    # machine-readable command tree (agent entry point)
+```
+
+`wvc docs` and every `--help` are pure — they **never touch the workspace**, so they are safe to run with a missing, placeholder, or encrypted `WAVE_DATA_DIR`.
+
+---
+
+## Global flags
+
+Available on every command:
+
+| Flag | Meaning |
+| --- | --- |
+| `--data-dir <path>` | Workspace directory (overrides `WAVE_DATA_DIR` and the `~/.waveclient` default) |
+| `--json` | Emit a single JSON document on stdout; implies `--quiet` and `--no-color` |
+| `-q, --quiet` | Suppress non-essential decoration on stderr |
+| `--verbose` | Print diagnostics to stderr (data dir, resolved ids, timing — never secrets) |
+| `--no-color` | Disable ANSI color |
+| `-V, --version` | Print the version and exit |
+| `-h, --help` | Show help (with examples) for any command |
+
+## Shared execution flags
+
+Accepted by `send` and the `run` commands:
+
+| Flag | Meaning |
+| --- | --- |
+| `-e, --env <nameOrId>` | Environment to resolve variables against (`global` for none) |
+| `--auth <nameOrId\|none>` | Auth profile to use (`none` sends unauthenticated) |
+| `--var <key=value>` | Set/override a variable (repeatable) |
+| `--timeout <seconds>` | Per-request timeout (`0` = no timeout) |
+| `--insecure` | Skip TLS certificate validation |
+| `-o, --output <path>` | Write the response body to a file, or into a directory (trailing slash, or an existing directory) under a filename derived from the response |
+| `--report [file]` | (`run` only) Write an HTML run report; default filename when no value |
+
+---
+
+## Streams and exit codes
+
+**Stream discipline.** Command **data** goes to **stdout**; everything else — status lines, spinners, progress, validation `✓`/`✗` lines, prompts, diagnostics — goes to **stderr**. So `wvc send X > body.json` yields exactly the response body, and a run pipeline keeps its data channel clean.
+
+**Exit codes** are a stable contract:
+
+| Code | Meaning |
+| --- | --- |
+| `0` | Success |
+| `1` | Internal error |
+| `2` | Usage / invalid input (bad flags, wrong mode, unknown setting key, invalid JSON payload) |
+| `3` | Execution failure — transport error, failed validation, run failures, or `--fail` with HTTP ≥ 400 |
+| `4` | Not found / ambiguous reference (with candidates listed) |
+
+---
+
+## For AI agents
+
+**Start here:** `wvc docs --json`. It walks the registered command tree and returns each command's `name`, `summary`, `usage`, `options`, `examples`, and `subcommands` — the full surface, without bootstrapping or touching disk.
+
+### `--json` output shapes
+
+`--json` emits **one JSON document on stdout** with no envelope, and implies `--quiet` + `--no-color`. Bodies are decoded to text when textual, otherwise base64 with `isBase64: true`. Masking (secret env vars, store credentials) is applied to JSON output exactly as it is to human output.
+
+- **`send` (both saved and ad-hoc URL modes share one shape):**
+  ```json
+  {
+    "status": 200,
+    "statusText": "OK",
+    "headers": { "content-type": "application/json" },
+    "body": "{\"id\":1}",
+    "elapsedTime": 132,
+    "size": 9,
+    "validationResult": { "allPassed": true, "results": [] }
+  }
+  ```
+  Binary bodies come back base64-encoded with `"isBase64": true`.
+- **`list` commands** (`collection list`, `env list`, `flow list`, …) emit a **JSON array** of objects.
+- **`show` commands** emit a single object for the resolved entity.
+- **`run` commands** (`collection run`, `flow run`, `suite run`) emit a run-summary document. Collection results include `name`, `method`, and `folderPath`; unsupported WS/SSE entries appear in `skipped` and are included in `progress.total` without causing failure. Suite items include `name`.
+
+  Two invariants make the counters safe to reason about:
+
+  - `progress.completed + progress.skipped === progress.total`. Use that sum — **not `completed` alone** — to decide whether a run finished, since `completed` never reaches `total` when anything was skipped.
+  - `progress.skipped === skipped.length`. `progress.skipped` counts only entries the runner never attempted (unsupported protocols), and those are exactly the entries listed in `skipped`. Requests abandoned by `--stop-on-failure` are a different thing: they were selected and attempted-in-principle, so they appear in `results` with `"status": "skipped"` and are counted under `completed`.
+- **`search`** results include an actionable collection-item `id`; use `wvc search pet --method POST --json` and pass an id to `wvc send <id> -c <collection>`.
+
+### Error envelope
+
+On failure, `--json` writes an error envelope to **stderr** (stdout stays empty) and sets the exit code:
+
+```json
+{ "error": { "code": 4, "message": "Ambiguous reference \"Ambiguous\"", "candidates": ["Users API › Ambiguous", "Orders API › Ambiguous"] } }
+```
+
+`code` matches the process exit code. `candidates` appears only for ambiguous references. Under `--json`, stderr is either empty or exactly this one error JSON document; shared-service diagnostics are suppressed unless `--verbose` is also set.
+
+### Non-interactive rules
+
+- Prefer `--file <path>` or `--stdin` over `--edit` for structured mutations — `--edit` needs an interactive editor.
+- Pass `--yes` to destructive commands (`delete`, `remove-test`). Without a TTY and without `--yes`, they exit `2` rather than hang on a prompt.
+- Rely on **exit codes**, not stderr text, for control flow. `0` = success; treat `3` as an execution failure and `4` as a lookup problem.
+- Parse **stdout** only; keep stderr for human/log consumption.
+
+---
+
+## Troubleshooting
+
+### Editor for `--edit` (Windows)
+
+`--edit` opens `$VISUAL`, then `$EDITOR`, then a platform fallback (`notepad` on Windows, `vi` elsewhere). On Windows:
+
+- Point `EDITOR`/`VISUAL` at a real path. Editors shipped as batch shims (`code`, `codium` → `code.cmd`) are launched through `cmd.exe` automatically; `.exe` editors and full paths are launched directly. Quoted paths with arguments work: `set "EDITOR="C:\Program Files\Microsoft VS Code\bin\code.cmd" --wait"`.
+- If your editor returns immediately (VS Code, Sublime), add its **wait** flag (`--wait` / `-w`) so `wvc` reads the file after you finish editing, not before.
+- Agents and CI should avoid `--edit` entirely — use `--file` or `--stdin`.
+
+### Piping and stdin (PowerShell / cmd)
+
+- Read a body from stdin with `-d @-`:
+  - PowerShell: `Get-Content .\body.json -Raw | wvc send https://api.example.com -d @- --data-json`
+  - cmd: `type body.json | wvc send https://api.example.com -d @- --data-json`
+- Inline `--data-json` also accepts payloads that arrive with literal outer single quotes when a process is spawned with a pre-tokenized argv (task runners, CI configs, programmatic invocation) that preserves them as bytes. This does **not** apply to PowerShell or cmd typed interactively — both strip embedded `"` characters from arguments before Node ever sees them, no matter how the value is quoted, so `-d '{"value":"test"}' --data-json` typed directly at the prompt still fails. Use `-d @file.json` or the `-d @-` stdin form above instead.
+- Feed a mutation payload with `--stdin`: `Get-Content .\flow.json -Raw | wvc flow create --stdin --json`.
+- Color is disabled automatically when stdout is redirected or piped (non-TTY), and by `NO_COLOR`. A redirected file (`wvc ... > out.json`) never contains ANSI escape codes.
+
+### Colors and terminals
+
+Colors and spinners are verified on Windows Terminal and the VS Code integrated terminal. Force color off with `--no-color` or `NO_COLOR=1`; `--json` and `--quiet` also suppress decoration.
+
+---
+
+## Security notes
+
+- **Settings masking.** `settings list` and `settings get` always mask credential-like values, including under `--json`; there is no reveal override.
+- **Headless OAuth.** OAuth2 Authorization Code and PKCE flows cannot be authorized headlessly. Refresh Token and Client Credentials flows work.
+- **Protocol runs.** WebSocket and SSE requests are reported as skipped by `collection run`; they do not make an otherwise successful HTTP run fail.
+
+- **No decryption.** `wvc` never decrypts an encrypted workspace; it reads plain JSON only and falls back to defaults otherwise.
+- **Masking.** `env show` masks secret variables unless `--reveal`; Wave Store auth/proxy/cert credentials are **always** masked (no override), including under `--json`.
+- **No secrets in logs.** `--verbose` prints operation context (data dir, resolved ids, timing) but never secrets, tokens, or resolved auth headers. The "Sent" snapshot respects the same redaction rules.
+- **No side-effect log files.** A `wvc` invocation writes diagnostics to stderr behind `--verbose` only; it never writes a log file.
+
+---
+
+## Related
+
+- [Build Your Own Client](../build-your-own-client.md) — the headless-client pattern `wvc` is built on
+- [VS Code extension](vscode.md) · [Web app](web-app.md) — the other two platforms sharing this workspace
+- [Reporting](../features/reporting.md) — the HTML run reports `--report` produces
+- [Versioning](../versioning.md) — the CLI's version track and release checklist
+- npm: [`@abranjith/wave-client-cli`](https://www.npmjs.com/package/@abranjith/wave-client-cli)
 
 ===== FILE: docs/design.md =====
 
@@ -1510,6 +1901,8 @@ A collection file is a single JSON object:
 
 ### `info` (collection metadata)
 
+For legacy files, `info.waveId` may be absent on disk. It is derived deterministically from the normalized filename at load time, without writing the file; renaming such a file changes the derived id.
+
 | Field | Type | Required | Notes |
 | --- | --- | --- | --- |
 | `info.waveId` | string | yes¹ | Stable logical identity of the collection |
@@ -1619,7 +2012,7 @@ Validation failures surface in the UI as error notifications with the failing fi
 
 # Versioning
 
-Wave Client is a monorepo that ships more than one thing: two apps, a reusable platform core, and persisted file formats. A single version number can't describe all of them honestly, so Wave Client uses **four independent version tracks**, each following [semantic versioning](https://semver.org).
+Wave Client is a monorepo that ships more than one thing: three apps, a reusable platform core, and persisted file formats. A single version number can't describe all of them honestly, so Wave Client uses **five independent version tracks**, each following [semantic versioning](https://semver.org).
 
 This page defines the tracks, what a major/minor/patch bump means on each, and the exact manual checklist for bumping each one. It is the single procedure for releases — if a step isn't written here, it isn't part of the process.
 
@@ -1627,7 +2020,7 @@ This page defines the tracks, what a major/minor/patch bump means on each, and t
 
 ---
 
-## The four tracks
+## The five tracks
 
 | # | Track | What it versions | Where the version lives |
 | --- | --- | --- | --- |
@@ -1635,6 +2028,7 @@ This page defines the tracks, what a major/minor/patch bump means on each, and t
 | 2 | **Web app** | The published `wave-client` npm package (bundled server + UI) | `packages/web-app/package.json` (kept in sync with `packages/web`) |
 | 3 | **Core platform** | The shared libraries and backends, versioned **in lockstep** as one platform version | `package.json` of each platform package (list below) |
 | 4 | **Wave schemas** | The persisted **collection** and **environment** file formats | `CURRENT_COLLECTION_SCHEMA_VERSION` / `CURRENT_ENVIRONMENT_SCHEMA_VERSION` in `packages/core/src/schemas/` |
+| 5 | **CLI app** | The published `@abranjith/wave-client-cli` package (the `wvc` binary) | `packages/cli/package.json` |
 
 Tracks move independently: an app can release without a platform bump, the platform can bump without either app releasing, and **schema versions never move just because a package released** (and vice versa).
 
@@ -1652,8 +2046,11 @@ Every package in the repo belongs to exactly one track:
 | `packages/arena` | `@wave-client/arena` | 3 — Core platform |
 | `packages/server` | `@wave-client/server` | 3 — Core platform¹ |
 | `packages/mcp-server` | `@wave-client/mcp-server` | 3 — Core platform¹ |
+| `packages/cli` | `@abranjith/wave-client-cli` (published, bin `wvc`) | 5 — CLI app |
 
 ¹ `server` and `mcp-server` follow the core platform track **unless/until they ship independently** (e.g., a standalone hosted server release). If that happens, they graduate to their own tracks and this page gets updated.
+
+The CLI (`packages/cli`, track 5) consumes `@wave-client/core` and `@wave-client/shared` as **bundled devDependencies** (inlined into its published bundle), so it ships on its own cadence and its version moves independently of the core platform track — a platform bump does not force a CLI release, and vice versa.
 
 The repo‑root `package.json` (`wave-client`, `private: true`) is the workspace root — it is never published and its version is not part of any track.
 
@@ -1665,13 +2062,17 @@ The Wave schemas (track 4) are **not** a package: they are two exported constant
 
 All tracks use `MAJOR.MINOR.PATCH`. What counts as "breaking" differs by audience:
 
-### Tracks 1 & 2 — apps (audience: end users)
+### Tracks 1, 2 & 5 — apps (audience: end users)
+
+Applies to the VS Code app, the web app, and the CLI (`wvc`).
 
 | Bump | When |
 | --- | --- |
-| **Major** | A change that breaks an existing user workflow — removed features, an incompatible change to settings/keybindings/CLI invocation, dropped platform support |
-| **Minor** | New user‑visible features or capabilities |
+| **Major** | A change that breaks an existing user workflow — removed features, an incompatible change to settings/keybindings, a breaking change to a CLI command/flag/exit-code contract, dropped platform support |
+| **Minor** | New user‑visible features or capabilities (a new command or flag for the CLI) |
 | **Patch** | Bug fixes, performance work, visual polish — no new features |
+
+The CLI is currently at `0.1.0` and follows the [pre‑1.0 convention](#pre10-convention-applies-to-all-tracks) below; its `--json` output shapes and exit-code table are the surfaces to treat as breaking.
 
 ### Track 3 — core platform (audience: the apps and [Build Your Own Client](build-your-own-client.md) authors)
 
@@ -1750,6 +2151,18 @@ CLI. `packages/web` itself is private (its build is an input to `packages/web-ap
 6. Update/add schema tests, then run `pnpm test` from the repo root.
 7. Commit with message `release(schema): collection v<version>` / `release(schema): environment v<version>` as applicable. A schema bump ships with whatever package release carries the code — it never requires one.
 
+### Track 5 — CLI app
+
+The CLI is published to npm as `@abranjith/wave-client-cli` (bin `wvc`). Its build is a single self-contained esbuild bundle: `@wave-client/core` and `@wave-client/shared` are inlined, third-party deps stay external.
+
+1. Decide the bump type using the [app semantics](#tracks-1-2--5--apps-audience-end-users) above — judge by the CLI's command/flag/`--json`/exit-code surface.
+2. Edit `version` in `packages/cli/package.json`.
+3. If the change is user‑visible, add or extend the release section at the top of [Release Notes](release-notes.md).
+4. Build the bundle: `pnpm build:cli` from the repo root. The build copies the repo `LICENSE` into the package and **fails** if any React-family package becomes a runtime external or if any imported external is missing from `dependencies`.
+5. Verify the tarball contents: `cd packages/cli && npm pack --dry-run` — it must contain exactly `dist/`, `README.md`, `LICENSE`, and `package.json` (no `.ts`/`.map`, no `meta.json`). Optionally run `node scripts/verify-pack.mjs` for a scripted check plus a packed-install smoke run (`wvc --version`, `wvc docs`).
+6. Publish to npm: `cd packages/cli && pnpm publish` (uses `publishConfig.access: public`; `pnpm publish` rewrites the `workspace:*` build deps out of the tarball). Run `npm login` once first.
+7. Commit with message `release(cli): v<version>` and tag `cli-v<version>`.
+
 ---
 
 ## Automation status
@@ -1788,7 +2201,7 @@ So "building a client" mostly means **implementing `IPlatformAdapter`** for your
 
 **2. Headless clients** (for example, a CLI) may skip the React UI entirely. Instead they reuse:
 - [`@wave-client/shared`](../packages/shared/README.md) — the Node-side **services** (`HttpService`, `WebSocketService`, `SseService`, collection/environment/validation logic), and
-- [`@wave-client/core`](../packages/core/README.md) — **types** and pure **utilities** (collection parsing, variable/`_fn_` resolution, JSONPath helpers).
+- [`@wave-client/core/headless`](../packages/core/README.md#entry-points) — **types**, schemas, executors, report builders, and pure **utilities** (collection parsing, variable/`_fn_` resolution, JSONPath helpers).
 
 …and present results however you like (terminal output, JSON, etc.).
 
@@ -1893,7 +2306,7 @@ A non-UI client doesn't need `AdapterProvider` or React. Compose the shared piec
 
 ```ts
 import { HttpService } from '@wave-client/shared';
-import { resolveParameterizedValue } from '@wave-client/core';
+import { resolveParameterizedValue } from '@wave-client/core/headless';
 
 // 1. Resolve {{variables}} and _fn_ functions in the request
 // 2. Execute via the shared HTTP service
@@ -1903,6 +2316,19 @@ import { resolveParameterizedValue } from '@wave-client/core';
 
 This reuses the exact request execution, variable resolution, and validation logic the GUI clients use — so behavior stays consistent across every client.
 
+### Reading the workspace
+
+Shared storage services (`collectionService`, `environmentService`, …) read and write through an `ISecurityService` that you install once at startup. Headless clients use `PlainJsonSecurityService`, the standard plain-JSON implementation shipped by `@wave-client/shared`:
+
+```ts
+import { setSecurityServiceInstance, PlainJsonSecurityService, settingsService } from '@wave-client/shared';
+
+setSecurityServiceInstance(new PlainJsonSecurityService());
+await settingsService.load();
+```
+
+It reads and writes the workspace as plain JSON — it does not decrypt. A workspace encrypted by the VS Code extension therefore falls back to empty defaults. The MCP server, the HTTP server, and the `wvc` CLI all use it.
+
 ---
 
 ## Testing your client
@@ -1910,7 +2336,8 @@ This reuses the exact request execution, variable resolution, and validation log
 Core ships a mock adapter so you can render and test UI without a real platform:
 
 ```tsx
-import { AdapterProvider, createMockAdapter } from '@wave-client/core';
+import { AdapterProvider } from '@wave-client/core';
+import { createMockAdapter } from '@wave-client/core/testing';
 
 const mock = createMockAdapter();
 render(
@@ -1930,6 +2357,7 @@ For your real adapter, test each sub-adapter in isolation — they're plain asyn
 - **Always return `Result`.** Don't throw across the adapter boundary; return `{ isOk: false, error }` so the shared UI/logic can handle failures uniformly.
 - **Reuse shared services** for anything network/IO-heavy rather than reimplementing protocols.
 - **Emit push events** (via `events`) for state changes and banners so the UI stays in sync.
+- **Use the headless entry for non-UI code.** CLI, server, MCP, and shared-service packages should import from `@wave-client/core/headless`, never the full `@wave-client/core` UI barrel.
 
 ---
 

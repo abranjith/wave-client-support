@@ -1,6 +1,8 @@
 # Installation
 
-Wave Client comes in two flavors. Pick the one that fits how you work — or use both; they share the same features and file formats.
+Wave Client comes in three forms: the VS Code extension, web app, and the headless CLI.
+
+Pick the Wave Client surface that fits how you work. All three clients share the same workspace formats.
 
 - **[VS Code extension](#vs-code-extension)** — runs inside your editor, right next to your code.
 - **[Web app](#web-app)** — runs in your browser, backed by a small local server.
@@ -29,6 +31,19 @@ Wave Client comes in two flavors. Pick the one that fits how you work — or use
 Wave Client opens in an editor tab. Your collections, environments, history, and settings are stored by the extension on your machine — see [Settings](../features/settings.md) for where data lives and how to encrypt it.
 
 Continue to the **[Quick Start](quick-start.md)**.
+
+---
+
+## CLI (`wvc`)
+
+Install the CLI with Node.js 18.18 or newer:
+
+```bash
+npm install -g @abranjith/wave-client-cli
+wvc docs --json
+```
+
+It uses the same Wave workspace as the other clients. See the [CLI guide](../platforms/cli.md) for commands and data-directory precedence.
 
 ---
 

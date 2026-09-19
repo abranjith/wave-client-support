@@ -34,7 +34,11 @@ Pick your AI provider and model in **Settings → Arena / AI Settings** (see [Se
 
 ---
 
-## MCP server (for external AI tools)
+## CLI for external AI tools (recommended)
+
+`wvc` is the supported agent surface. Start with `wvc docs --json`, then use `--json` commands to inspect and operate on a Wave workspace with stable exit codes and machine-readable output. See the [CLI guide](../platforms/cli.md).
+
+## MCP server (older compatibility path)
 
 Wave Client also ships an **MCP (Model Context Protocol) server** that exposes your workspace to *external* AI agents (for example, an AI assistant in another tool). Through it, an agent can inspect collections and requests, search endpoints, read environments (with secrets masked), and list/run flows and test suites.
 

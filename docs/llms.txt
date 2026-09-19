@@ -1,5 +1,7 @@
 # Wave Client
 
+> Wave Client is available as a Visual Studio Code extension, standalone web app, and the headless `wvc` CLI for terminal, CI, and agent workflows.
+
 > Wave Client is a modern, platform-agnostic REST API client that runs both as a Visual Studio Code extension and as a standalone web app. It builds and sends HTTP, WebSocket, and SSE requests; organizes them into collections; parameterizes them with environments and variables; validates responses; chains them into flows and test suites; and includes a built-in AI assistant. This file follows the llms.txt convention (https://llmstxt.org) to help language models discover and navigate the documentation. All links are relative to this file's location (the `docs/` directory) and resolve on GitHub.
 
 ## Getting started
@@ -26,13 +28,14 @@
 
 - [VS Code extension](platforms/vscode.md): Opening Wave Client (command and `Ctrl+Alt+W` / `Cmd+Alt+W`), data storage, networking, and theme.
 - [Web app](platforms/web-app.md): Running the local server + UI, default ports (3456/5173), connection status, and troubleshooting.
+- [CLI (`wvc`)](platforms/cli.md): The `@abranjith/wave-client-cli` headless client — install, workspace/data-dir resolution, the full command reference (including `suite add-case`, `edit-case`, `remove-case`, and lossless `list-cases --json`), global/shared flags, and an agent guide (`wvc docs --json`, `--json` output shapes, the exit-code table, and non-interactive rules).
 
 ## Reference
 
 - [Design & Architecture](design.md): Monorepo and package responsibilities, the adapter pattern, services, the Zustand store, hooks, and the Result pattern.
 - [Wave Schemas](schemas.md): The persisted collection and environment file formats (versioned Zod schemas), field by field, with validation boundaries and version history.
 - [Test Suite Schema Reference](test-suite-schema.md): The persisted test-suite/test-case file format, the merge-vs-replace override semantics, validation precedence, and authoring tips for developers and AI agents.
-- [Versioning](versioning.md): The four independent version tracks (VS Code app, web app, core platform, Wave schemas), semver semantics per track, and the manual bump checklists.
+- [Versioning](versioning.md): The five independent version tracks (VS Code app, web app, core platform, Wave schemas, CLI app), semver semantics per track, and the manual bump checklists.
 - [Build Your Own Client](build-your-own-client.md): How to build a new Wave Client client (CLI, desktop, etc.) on the platform-agnostic core by implementing the IPlatformAdapter interface; covers UI and headless clients.
 - [Release Notes](release-notes.md): Capabilities by area for the public beta.
 
